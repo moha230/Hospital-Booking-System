@@ -1,0 +1,27 @@
+# Deno dependencies
+deno.lock
+deno_dir/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# Logs
+*.log
+logs/
+nohup.out
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node compatibility (if using npm dependencies)
+node_modules/
+package-lock.json
+
+# Build artifacts (if applicable)
+dist/
