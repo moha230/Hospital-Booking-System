@@ -69,3 +69,10 @@
 
 ## 13. Emergency Assistance
 - Users can contact emergency services or request emergency medical assistance directly from the app in case of critical situations.
+
+
+User Management
+POST /users/register → Register new users (patients, doctors, admins)
+POST /users/login → Authenticate users
+GET /users/:id → Get user details
+PUT /users/:id → Update user profile
