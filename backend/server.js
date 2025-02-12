@@ -14,12 +14,15 @@ connectDB();
 
 // middlewares 
 
+// Middleware to parse JSON request bodies
 app.use(express.json());
 app.use(cors());
 
 
-//api endpoints use localhost:3000/api/v1/add-doctor
-app.use("/api/v1/admin",adminRouter)
+// Define API endpoints using base URL: http://localhost:3000/api/v1/admin
+// This means all routes inside `adminRouter` will be prefixed with `/api/v1/admin`
+app.use("/api/v1/admin", adminRouter);
+
 
 
 

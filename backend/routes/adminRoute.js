@@ -1,10 +1,12 @@
 import express from 'express';
 import { addDoctor } from '../controllers/adminController.js';
 
-
+// Create a new router instance for handling admin-related routes
 const adminRouter = express.Router();
 
-adminRouter.post('/add-doctor',addDoctor);
+
+// This handles POST requests to the endpoint: http://localhost:3000/api/v1/admin/add-doctor
+adminRouter.post('/add-doctor', addDoctor);
 
 
 export default adminRouter;

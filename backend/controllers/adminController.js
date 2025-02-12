@@ -1,3 +1,4 @@
+// import { addDoctorService } from '../services/adminService.js'; // Import the service
 import validator from "validator";
 import bcrypt from "bcrypt";
 import doctorModel from '../models/doctorModel.js';
@@ -5,7 +6,11 @@ import doctorModel from '../models/doctorModel.js';
 // function to add doctor in the database
 const addDoctor = async (req, res) => {
   try {
+
+  
     const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
+      console.log(req.body)
+
 
     
     if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
@@ -26,7 +31,7 @@ const addDoctor = async (req, res) => {
     const salt = await bcrypt.genSalt(5); // the more no. round the more time it will take
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    //save the data to database 
+    //save the data to database this has to have its own file called adminService 
 
     const doctorData = {
       name,
@@ -44,6 +49,12 @@ const addDoctor = async (req, res) => {
     const newDoctor = new doctorModel(doctorData)
         await newDoctor.save()
         res.json({ success: true, message: 'Doctor Added' })
+
+    //  // Call the service function to handle doctor creation
+    //  const response = await addDoctorService({ name, email, password, speciality, degree, experience, about, fees, address });
+
+    //  res.json(response);  // Send the response from the service
+ 
 
   } catch (error) {
     console.log(error);
