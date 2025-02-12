@@ -17,7 +17,7 @@ const loginAdmin = async (req, res) => {
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
       //store the web token in the variable called with JWT secret token 
       const token = jwt.sign(email+password,process.env.JWT_SECRET)
-      console.log(token);
+      //console.log(token);
       //send a response back json format 
       res.json({success:true,token})
     }
