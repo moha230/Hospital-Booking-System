@@ -26,9 +26,7 @@ app.use("/api/v1/admin", adminRouter);
 
 
 
-app.get("/", (req,res) => {
-   res.send("Hello its time to ride hello");
-})
+
 
 app.listen(port, () => {
   console.log("server is running",port);

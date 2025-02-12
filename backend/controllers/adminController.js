@@ -90,8 +90,25 @@ const addDoctor = async (req, res) => {
   }
 };
 
+// Function to get all a doctor's details
+
+
+const allDoctors = async (req,res) => {
+  try {
+
+      const doctors = await doctorModel.find({}).select('-password')
+      res.json({ success: true, doctors })
+
+  } catch (error) {
+      console.log(error)
+      res.json({ success: false, message: error.message })
+  }
+}
 
 
 
 
-export { addDoctor ,loginAdmin};
+
+
+
+export { addDoctor ,loginAdmin,allDoctors};

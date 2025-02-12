@@ -17,10 +17,8 @@ const authAdmin = async (req, res, next) => {
       // verity token
       const decode_Token = jwt.verify(AdminToken, process.env.JWT_SECRET)
 
-      req.decode_Token= decode_Token;
-      
-
-      //callback function
+      req.decode_Token= decode_Token;    
+      //go to next middler ware 
 
       next();
 
