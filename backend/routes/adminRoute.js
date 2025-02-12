@@ -1,5 +1,5 @@
 import express from 'express';
-import { addDoctor } from '../controllers/adminController.js';
+import { addDoctor ,loginAdmin} from '../controllers/adminController.js';
 
 // Create a new router instance for handling admin-related routes
 const adminRouter = express.Router();
@@ -7,6 +7,7 @@ const adminRouter = express.Router();
 
 // This handles POST requests to the endpoint: http://localhost:3000/api/v1/admin/add-doctor
 adminRouter.post('/add-doctor', addDoctor);
+adminRouter.post('/login', loginAdmin);
 
 
 export default adminRouter;
