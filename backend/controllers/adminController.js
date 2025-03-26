@@ -1,7 +1,7 @@
-// import { addDoctorService } from '../services/adminService.js'; // Import the service
+// import { addUserService } from '../services/adminService.js'; // Import the service
 import validator from "validator";
 import bcrypt from "bcrypt";
-import doctorModel from '../models/doctorModel.js';
+import userModel from '../models/usersModel.js';
 //importing jwt 
 import jwt from 'jsonwebtoken';
 
@@ -31,8 +31,8 @@ const loginAdmin = async (req, res) => {
   }
 }
 
-// function to add doctor in the database
-const addDoctor = async (req, res) => {
+// function to add user in the database
+const addUser = async (req, res) => {
   try {
 
 
@@ -61,7 +61,7 @@ const addDoctor = async (req, res) => {
 
     //save the data to database this has to have its own file called adminService 
 
-    const doctorData = {
+    const userData = {
       name,
       email,
       password: hashedPassword,
@@ -74,12 +74,12 @@ const addDoctor = async (req, res) => {
       date: Date.now()
     }
 
-    const newDoctor = new doctorModel(doctorData)
-    await newDoctor.save()
-    res.json({ success: true, message: 'Doctor Added' })
+    const newUser = new userModel(userData)
+    await newUser.save()
+    res.json({ success: true, message: 'User Added' })
 
-    //  // Call the service function to handle doctor creation
-    //  const response = await addDoctorService({ name, email, password, speciality, degree, experience, about, fees, address });
+    //  // Call the service function to handle user creation
+    //  const response = await addUserService({ name, email, password, speciality, degree, experience, about, fees, address });
 
     //  res.json(response);  // Send the response from the service
 
@@ -90,14 +90,14 @@ const addDoctor = async (req, res) => {
   }
 };
 
-// Function to get all a doctor's details
+// Function to get all a user's details
 
 
-const allDoctors = async (req,res) => {
+const allUsers = async (req,res) => {
   try {
 
-      const doctors = await doctorModel.find({}).select('-password')
-      res.json({ success: true, doctors })
+      const users = await userModel.find({}).select('-password')
+      res.json({ success: true, users })
 
   } catch (error) {
       console.log(error)
@@ -111,4 +111,4 @@ const allDoctors = async (req,res) => {
 
 
 
-export { addDoctor ,loginAdmin,allDoctors};
+export { addUser ,loginAdmin,allUsers};
