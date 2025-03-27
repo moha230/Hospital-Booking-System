@@ -18,20 +18,25 @@ will install  tailwind next
 npm install -D tailwindcss@3 postcss autoprefixer
 npx tailwindcss init -p  //configfile 
 
-dd the Tailwind directives to your CSS
+Assets folder created and add assets 
+assest folder contains js file 
 
-Add the @tailwind directives for each of Tailwind’s layers to your ./src/index.css file.
-index.css
+In a React frontend, the context folder is typically used to organize React Context API logic — a way to share state, functions, or values globally across your app without having to pass props manually through many layers of components.
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-Start your build process
+What is React Context?
+React Context is a built-in feature that allows you to create a global state container. It’s ideal for things like:
+Authentication state (e.g., logged in user info)
+Theme settings (light/dark mode)
+Language/locale settings
+Shopping cart in e-commerce
+App-wide settings and config
+📁 Example context Folder Structure
 
-Run your build process with npm run dev.
-Terminal
 
-npm run dev
-Start using Tailwind in your project
-
-Start using Tailwind’s utility classes to style your content.
+src/
+├── components/
+├── pages/
+├── context/
+│   ├── AuthContext.js
+│   ├── ThemeContext.js
+│   └── AppProvider.js
