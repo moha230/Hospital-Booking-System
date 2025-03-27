@@ -12,6 +12,7 @@ deno_dir/
 *.log
 logs/
 nohup.out
+.DS_Store
 
 # IDE and editor settings
 .vscode/
