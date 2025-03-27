@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-export default function Profile() {
-  return (
-    <div>Profile</div>
-  )
-}
+const Profile = () => {
+  return <div>Hello this is the Profile page</div>;
+};
+
+export default Profile;

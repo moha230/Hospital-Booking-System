@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-export default function UserAppointment() {
-  return (
-    <div>UserAppointment</div>
-  )
-}
+const UserAppointment = () => {
+  return <div>Hello this is the UserAppointment page</div>;
+};
+
+export default UserAppointment;
