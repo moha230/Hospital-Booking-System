@@ -37,9 +37,9 @@ const Navbar = () => {
             <img className="w-2.5" src={assets.dropdown_icon} />
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="className='min-w-48 bg-gray-50 rounded flex flex-col gap-4 p-4">
-                <p onClick={()=>navigate('my-profile')}>Oma profile</p>
-                <p onClick={()=>navigate('my-Appointment')}>My appointment</p>
-                <p onClick={()=>setToken(false)('my-profile')}>Logout</p>
+                <p className="hover:text-green-500 cursor-pointer" onClick={()=>navigate('my-profile')}>Oma profile</p>
+                <p className="hover:text-green-500 cursor-pointer" onClick={()=>navigate('my-Appointment')}>My appointment</p>
+                <p className="hover:text-green-500 cursor-pointer" onClick={()=>setToken(false)('my-profile')}>Logout</p>
                
               </div>
             </div>
