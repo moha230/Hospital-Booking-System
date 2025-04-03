@@ -2,6 +2,8 @@
 import logo from './logo.svg'
 import dropdown_icon from './dropdown_icon.svg'
 import profile_pic from './profile_pic.jpg'
+import group_profiles from './group_profiles.png'
+import header from './header.png'
 
 
 
@@ -10,6 +12,8 @@ export const assets = {
     logo,
     dropdown_icon,
     profile_pic,
+    group_profiles,
+    header,
     
 }
 
