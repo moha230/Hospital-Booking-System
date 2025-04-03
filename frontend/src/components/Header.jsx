@@ -24,7 +24,7 @@ const Header = () => {
         </a>
       </div>
       {/* right side container */}
-      <div className="md:w-1/2 relative">
+      <div className="md:w-1/2 relative bg-transparent">
         <img
           className="w-full md:absolute bottom-0 h-auto rounded-lg"
           src={assets.header}
