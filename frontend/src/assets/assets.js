@@ -8,6 +8,12 @@ import Dermatologist from './specialists/Dermatologist.svg'
 import Gastroenterologist from './specialists/Gastroenterologist.svg'
 import General_physician from './specialists/General_physician.svg'
 import Gynecologist from './specialists/Gynecologist.svg'
+import doc1 from './homepagedoctors/doc1.png'
+import doc2 from './homepagedoctors/doc2.png'
+import doc3 from './homepagedoctors/doc3.png'
+import doc4 from './homepagedoctors/doc4.png'
+import doc5 from './homepagedoctors/doc5.png'
+import doc6 from './homepagedoctors/doc6.png'
 
 
 
@@ -25,6 +31,7 @@ export const assets = {
         General_physician,
         Gynecologist
     }
+
 
 }
 
@@ -50,3 +57,90 @@ export const specialityData = [
 ];
 
 
+export const doctors = [
+    {
+        _id: 'doc1',
+        name: 'Dr. Julien Dubois',
+        image: doc1,
+        speciality: 'General physician',
+        degree: 'MBBS',
+        experience: '4 Years',
+        about: 'Dr. Dubois is dedicated to preventive medicine and personalized care, ensuring the best outcomes for all patients.',
+        fees: 50,
+        address: {
+            line1: 'Aleksanterinkatu 44',
+            line2: 'Helsinki, Finland'
+        }
+    },
+    {
+        _id: 'doc2',
+        name: 'Dr. Sofia Lindberg',
+        image: doc2,
+        speciality: 'Gynecologist',
+        degree: 'MBBS',
+        experience: '3 Years',
+        about: 'Dr. Lindberg provides compassionate and expert care, focusing on women’s health and wellness.',
+        fees: 60,
+        address: {
+            line1: 'Kauppakatu 10',
+            line2: 'Tampere, Finland'
+        }
+    },
+    {
+        _id: 'doc3',
+        name: 'Dr. Martina Rossi',
+        image: doc3,
+        speciality: 'Dermatologist',
+        degree: 'MBBS',
+        experience: '1 Years',
+        about: 'Dr. Rossi specializes in treating skin conditions with modern techniques and personalized treatments.',
+        fees: 30,
+        address: {
+            line1: 'Rautatienkatu 8',
+            line2: 'Oulu, Finland'
+        }
+    },
+    {
+        _id: 'doc4',
+        name: 'Dr. Klaus Weber',
+        image: doc4,
+        speciality: 'Pediatricians',
+        degree: 'MBBS',
+        experience: '2 Years',
+        about: 'Dr. Weber has a warm approach to children’s healthcare with a focus on early diagnosis.',
+        fees: 40,
+        address: {
+            line1: 'Itäinen Pitkäkatu 14',
+            line2: 'Turku, Finland'
+        }
+    },
+    {
+        _id: 'doc5',
+        name: 'Dr. Anna Müller',
+        image: doc5,
+        speciality: 'Neurologist',
+        degree: 'MBBS',
+        experience: '4 Years',
+        about: 'Dr. Müller is passionate about helping patients with neurological disorders through holistic approaches.',
+        fees: 50,
+        address: {
+            line1: 'Satakunnankatu 20',
+            line2: 'Tampere, Finland'
+        }
+    },
+    {
+        _id: 'doc6',
+        name: 'Dr. Pedro Alvarez',
+        image: doc6,
+        speciality: 'Neurologist',
+        degree: 'MBBS',
+        experience: '4 Years',
+        about: 'Dr. Alvarez delivers top-level neurological care backed by research and years of experience.',
+        fees: 50,
+        address: {
+            line1: 'Hallituskatu 5',
+            line2: 'Oulu, Finland'
+        }
+    }
+   
+];
