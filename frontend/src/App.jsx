@@ -9,6 +9,8 @@ import Profile from "./pages/Profile.jsx";
 import UserAppointment from "./pages/UserAppointment.jsx";
 import Appointment from "./pages/Appointment.jsx";
 import Navbar from './components/Navbar.jsx';
+import Footer from "./components/Footer.jsx";
+
 
 
 
@@ -27,6 +29,7 @@ const App = () => {
         <Route path="/userAppointment" element={<UserAppointment/>} />
         <Route path="/appointment/:docId" element={<Appointment/>} />
       </Routes>
+      <Footer/>
     </div>
   );
 };
