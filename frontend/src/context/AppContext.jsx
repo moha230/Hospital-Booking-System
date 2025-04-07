@@ -7,9 +7,9 @@ const AppContextProvider = (props) => {
   const value = {
     doctors,
   };
-  return <AppContext.Provider value={value}>
-    {props.children}
-    </AppContext.Provider>;
+  return (
+    <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
+  );
 };
 
 export default AppContextProvider;
