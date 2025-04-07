@@ -54,13 +54,8 @@ const Doctors = () => {
 
         {/* Displaying doctors based on speciality */}
         <div
-          className={`w-full pt-5 gap-y-6 px-3 sm:px-0 flex ${
-            filterDoc.length === 1
-              ? "justify-center"
-              : filterDoc.length === 2
-              ? "justify-start gap-4"
-              : "grid grid-cols-3 gap-4"
-          }`}
+           className="w-full max-w-7xl mx-auto grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 place-items-center pt-5 px-4"
+
         >
           {filterDoc.map((item, index) => (
             <div
