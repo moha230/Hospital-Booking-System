@@ -14,6 +14,8 @@ import doc3 from './homepagedoctors/doc3.png'
 import doc4 from './homepagedoctors/doc4.png'
 import doc5 from './homepagedoctors/doc5.png'
 import doc6 from './homepagedoctors/doc6.png'
+import verified_icon from './icons/verified_icon.svg'
+import info_icon from './icons/info_icon.svg'
 
 
 
@@ -25,6 +27,8 @@ export const assets = {
     profile_pic,
     group_profiles,
     header,
+    verified_icon,
+    info_icon,
     specialists: {
         Dermatologist,
         Gastroenterologist,
@@ -63,7 +67,7 @@ export const doctors = [
         name: 'Dr. Julien Dubois',
         image: doc1,
         speciality: 'General physician',
-        degree: 'MBBS',
+        degree: 'Licentiate of Medicine',
         experience: '4 Years',
         about: 'Dr. Dubois is dedicated to preventive medicine and personalized care, ensuring the best outcomes for all patients.',
         fees: 50,
@@ -77,7 +81,7 @@ export const doctors = [
         name: 'Dr. Sofia Lindberg',
         image: doc2,
         speciality: 'Gynecologist',
-        degree: 'MBBS',
+        degree: 'Licentiate of Medicine',
         experience: '3 Years',
         about: 'Dr. Lindberg provides compassionate and expert care, focusing on women’s health and wellness.',
         fees: 60,
@@ -91,7 +95,7 @@ export const doctors = [
         name: 'Dr. Martina Rossi',
         image: doc3,
         speciality: 'Dermatologist',
-        degree: 'MBBS',
+        degree: 'Licentiate of Medicine',
         experience: '1 Years',
         about: 'Dr. Rossi specializes in treating skin conditions with modern techniques and personalized treatments.',
         fees: 30,
@@ -105,7 +109,7 @@ export const doctors = [
         name: 'Dr. Klaus Weber',
         image: doc4,
         speciality: 'Pediatricians',
-        degree: 'MBBS',
+        degree: 'Licentiate of Medicine',
         experience: '2 Years',
         about: 'Dr. Weber has a warm approach to children’s healthcare with a focus on early diagnosis.',
         fees: 40,
@@ -119,7 +123,7 @@ export const doctors = [
         name: 'Dr. Anna Müller',
         image: doc5,
         speciality: 'Gastroenterologist',
-        degree: 'MBBS',
+        degree: 'Licentiate of Medicine',
         experience: '4 Years',
         about: 'Dr. Müller is passionate about helping patients with Gastroenterologist disorders through holistic approaches.',
         fees: 50,
@@ -133,7 +137,7 @@ export const doctors = [
         name: 'Dr. Pedro Alvarez',
         image: doc6,
         speciality: 'Gastroenterologist',
-        degree: 'MBBS',
+        degree: 'Licentiate of Medicine',
         experience: '4 Years',
         about: 'Dr. Alvarez delivers top-level Gastroenterologist care backed by research and years of experience.',
         fees: 50,
@@ -142,5 +146,6 @@ export const doctors = [
             line2: 'Oulu, Finland'
         }
     }
-   
 ];
+
+
