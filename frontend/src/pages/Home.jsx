@@ -1,13 +1,13 @@
-import React from "react";
-import Header from '../components/Header'
-import Speciality from "../components/Speciality";
-import HomeDoctors from "../components/HomeDoctors";
+import Header from "@/components/home/Header.jsx";
+import Speciality from "@/components/home/Speciality.jsx";
+import HomeDoctors from "@/components/home/HomeDoctors.jsx";
+
 const Home = () => {
   return (
     <div>
       <Header />
-      <Speciality/>
-      <HomeDoctors/>
+      <Speciality />
+      <HomeDoctors />
     </div>
   );
 };

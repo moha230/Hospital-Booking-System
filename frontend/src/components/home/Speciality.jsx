@@ -1,6 +1,7 @@
 import React from "react";
-import { specialityData } from "../assets/assets";
+
 import { Link } from "react-router-dom";
+import { specialityData } from "@/assets/assets";
 
 function Speciality() {
   return (
@@ -17,7 +18,8 @@ function Speciality() {
           <Link
             to={`/doctors/${item.speciality}`}
             key={index}
-            className="group relative flex flex-col items-center text-xs cursor-pointer flex-shrink-0 transition-all duration-500 hover:scale-110 hover:z-10">
+            className="group relative flex flex-col items-center text-xs cursor-pointer flex-shrink-0 transition-all duration-500 hover:scale-110 hover:z-10"
+          >
             <img
               className="mb-2 w-16 sm:w-36 transition-transform duration-300 ease-in-out"
               src={item.image}

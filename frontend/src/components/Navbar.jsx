@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
+import { assets } from "@/assets/assets";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,7 +11,12 @@ const Navbar = () => {
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD]">
-      <img onClick={()=> navigate('/')} className="w-45 cursor-pointer" src={assets.logo} alt="logo" />
+      <img
+        onClick={() => navigate("/")}
+        className="w-45 cursor-pointer"
+        src={assets.logo}
+        alt="logo"
+      />
       <ul className="md:flex items-start gap-5 font-medium hidden">
         <NavLink to="/">
           <li className="py-1">Home</li>
@@ -37,10 +42,24 @@ const Navbar = () => {
             <img className="w-2.5" src={assets.dropdown_icon} />
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="className='min-w-48 bg-gray-50 rounded flex flex-col gap-4 p-4">
-                <p className="hover:text-green-500 cursor-pointer" onClick={()=>navigate('my-profile')}>Oma profile</p>
-                <p className="hover:text-green-500 cursor-pointer" onClick={()=>navigate('my-Appointment')}>My appointment</p>
-                <p className="hover:text-green-500 cursor-pointer" onClick={()=>setToken(false)('my-profile')}>Logout</p>
-               
+                <p
+                  className="hover:text-green-500 cursor-pointer"
+                  onClick={() => navigate("my-profile")}
+                >
+                  Oma profile
+                </p>
+                <p
+                  className="hover:text-green-500 cursor-pointer"
+                  onClick={() => navigate("my-Appointment")}
+                >
+                  My appointment
+                </p>
+                <p
+                  className="hover:text-green-500 cursor-pointer"
+                  onClick={() => setToken(false)("my-profile")}
+                >
+                  Logout
+                </p>
               </div>
             </div>
           </div>

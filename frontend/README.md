@@ -1,12 +1,17 @@
-# React + Vite
+#  React Component Structure Notes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##  Structure Philosophy: Feature-Based (Page-Based)
 
-Currently, two official plugins are available:
+In this project, components are organized **by page or feature**, instead of keeping all components in one global `components/` folder. This makes the codebase more scalable, modular, and easier to understand.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+##  Reasons for using Feature-Based?
+
+- Keeps all files related to a specific page (component, styles, logic) in one place.
+- Easier to manage and debug — especially in larger applications.
+- Improves team collaboration by reducing code collisions.
+- Encourages modular design.
+
+
+

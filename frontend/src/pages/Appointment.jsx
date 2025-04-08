@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
-import { assets } from "../assets/assets";
+import { AppContext } from "@/context/AppContext";
+import { assets } from "@/assets/assets";
 
 const Appointment = () => {
   // use the param hook extract the 'docId' form the Url
@@ -13,17 +13,83 @@ const Appointment = () => {
   //state to hold the selected doctors info
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
-  const [docIndex, setDocIndex] = useState([]);
+  const [docIndex, setDocIndex] = useState(0);
+  const [slotTime,setSlotTime]  = useState('');
+  
 
-  const fetchDocinfo = async () => {
+  const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
     console.log(docInfo);
   };
 
+  //function to calculate slots for time 
+
+  const getAvailableSlots = async () => {
+    if (!docInfo) return;
+  
+    const today = new Date();
+    const slotsPerDay = [];
+  
+    // utility to format a date into slotDate 
+    const formatSlotDate = (date) =>
+      `${date.getDate()}_${date.getMonth() + 1}_${date.getFullYear()}`;
+  
+    for (let i = 0; i < 7; i++) {
+      const dayDate = new Date(today);
+      dayDate.setDate(today.getDate() + i);
+  
+      const currentDate = new Date(dayDate);
+      const endTime = new Date(dayDate);
+      endTime.setHours(21, 0, 0, 0); // slots until 9 PM
+  
+      // set starting time
+      if (i === 0) {
+        currentDate.setHours(Math.max(currentDate.getHours() + 1, 10));
+        currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
+      } else {
+        currentDate.setHours(10, 0, 0, 0);
+      }
+  
+      const slotDateKey = formatSlotDate(currentDate);
+      const bookedSlots = docInfo.slots_booked?.[slotDateKey] || [];
+  
+      const daySlots = [];
+  
+      while (currentDate < endTime) {
+        const formattedTime = currentDate.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+  
+        if (!bookedSlots.includes(formattedTime)) {
+          daySlots.push({
+            datetime: new Date(currentDate),
+            time: formattedTime,
+          });
+        }
+  
+        currentDate.setMinutes(currentDate.getMinutes() + 30);
+      }
+  
+      slotsPerDay.push(daySlots);
+    }
+  
+    setDocSlots(slotsPerDay);
+  };
+  
+
   useEffect(() => {
-    fetchDocinfo();
-  }, [doctors,docId]);
+    if (doctors.length > 0) {
+      fetchDocInfo();
+    }
+  }, [doctors, docId]);
+
+  useEffect(() => {
+    if (docInfo) {
+      getAvailableSlots();
+    }
+  }, [docInfo]);
 
   return (
     docInfo && (

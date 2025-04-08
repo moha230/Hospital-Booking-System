@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AppContext } from '../context/AppContext'
+import { AppContext } from '@/context/AppContext.jsx';
+
 
 
 const HomeDoctors = () => {
