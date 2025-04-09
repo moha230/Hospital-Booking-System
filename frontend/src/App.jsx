@@ -1,15 +1,15 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home.jsx";
-import About from "./pages/About.jsx";
-import Contact from "./pages/Contact.jsx";
-import Doctors from "./pages/Doctors.jsx";
-import Login from "./pages/Login.jsx";
-import Profile from "./pages/Profile.jsx";
-import UserAppointment from "./pages/UserAppointment.jsx";
-import Appointment from "./pages/Appointment.jsx";
-import Navbar from "./components/Navbar.jsx";
-import Footer from "./components/Footer.jsx";
+import Home from "@/pages/Home.jsx";
+import About from "@/pages/About.jsx";
+import Contact from "@/pages/Contact.jsx";
+import Doctors from "@/pages/Doctors.jsx";
+import Login from "@/pages/Login.jsx";
+import Profile from "@/pages/Profile.jsx";
+import UserAppointment from "@/pages/UserAppointment.jsx";
+import Appointment from "@/pages/Appointment.jsx";
+import Navbar from "@/components/layer/Navbar.jsx";
+import Footer from "@/components/layer/Footer.jsx";
 
 const App = () => {
   return (
