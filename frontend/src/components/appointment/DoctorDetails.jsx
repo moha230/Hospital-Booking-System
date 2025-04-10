@@ -9,10 +9,11 @@ const DoctorDetails = () => {
 
   const [docInfo, setDocInfo] = useState(null);
 
+//function to fetch doctors info 
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
-    console.log("Loaded Doctor Info:", docInfo);
+    
   };
 
   useEffect(() => {
