@@ -1,7 +1,10 @@
 import React from "react";
+import CompanyIntro from "@/components/about/CompanyIntro";
 
 const About = () => {
-  return <div>Hello this is the About page</div>;
+  return (
+    <CompanyIntro/>
+  );
 };
 
 export default About;

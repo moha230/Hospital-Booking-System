@@ -1,5 +1,6 @@
 
 import logo from './logo.svg'
+import about_image from './about_image.png'
 import dropdown_icon from './icons/dropdown_icon.svg'
 import profile_pic from './profile_pic.jpg'
 import group_profiles from './group_profiles.png'
@@ -26,6 +27,7 @@ import info_icon from './icons/info_icon.svg'
 
 
 
+
 export const assets = {
 
     logo,
@@ -35,6 +37,7 @@ export const assets = {
     header,
     verified_icon,
     info_icon,
+    about_image,
     specialists: {
         Dermatologist,
         Gastroenterologist,
