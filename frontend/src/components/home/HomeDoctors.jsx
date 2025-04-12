@@ -18,6 +18,7 @@ const HomeDoctors = () => {
                 {doctors.slice(0, 6).map((item, index) => (
                     <div onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0) }} className='border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
                         <img className='bg-[#EAEFFF] w-full  object-cover' src={item.image} alt="" />
+                         {/* Doctor details */}
                         <div className='p-4'>
                             <div className='flex items-center gap-2 text-sm text-green-500'>
                                 <p className='w-2 h-2 rounded-full bg-green-500'> </p>

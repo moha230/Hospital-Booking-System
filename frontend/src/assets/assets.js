@@ -13,7 +13,13 @@ import doc2 from './homepagedoctors/doc2.png'
 import doc3 from './homepagedoctors/doc3.png'
 import doc4 from './homepagedoctors/doc4.png'
 import doc5 from './homepagedoctors/doc5.png'
-import doc6 from './homepagedoctors/doc6.png'
+import doc6 from './homepagedoctors/doc1.png'
+import doc7 from './homepagedoctors/doc2.png';
+import doc8 from './homepagedoctors/doc3.png';
+import doc9 from './homepagedoctors/doc4.png';
+import doc10 from './homepagedoctors/doc5.png';
+import doc11 from './homepagedoctors/doc6.png';
+import doc12 from './homepagedoctors/doc3.png';
 import verified_icon from './icons/verified_icon.svg'
 import info_icon from './icons/info_icon.svg'
 
@@ -62,90 +68,180 @@ export const specialityData = [
 
 
 export const doctors = [
+    // General Physician
     {
-        _id: 'doc1',
-        name: 'Dr. Julien Dubois',
-        image: doc1,
-        speciality: 'General physician',
-        degree: 'Licentiate of Medicine',
-        experience: '4 Years',
-        about: 'Dr. Dubois is dedicated to preventive medicine and personalized care, ensuring the best outcomes for all patients.',
-        fees: 50,
-        address: {
-            line1: 'Aleksanterinkatu 44',
-            line2: 'Helsinki, Finland'
-        }
+      _id: 'doc1',
+      name: 'Dr. Julien Dubois',
+      image: doc1,
+      speciality: 'General_physician',
+      degree: 'Licentiate of Medicine',
+      experience: '4 Years',
+      about: 'Dr. Dubois is dedicated to preventive medicine and personalized care, ensuring the best outcomes for all patients.',
+      fees: 50,
+      address: {
+        line1: 'Aleksanterinkatu 44',
+        line2: 'Helsinki, Finland',
+      },
     },
     {
-        _id: 'doc2',
-        name: 'Dr. Sofia Lindberg',
-        image: doc2,
-        speciality: 'Gynecologist',
-        degree: 'Licentiate of Medicine',
-        experience: '3 Years',
-        about: 'Dr. Lindberg provides compassionate and expert care, focusing on women’s health and wellness.',
-        fees: 60,
-        address: {
-            line1: 'Kauppakatu 10',
-            line2: 'Tampere, Finland'
-        }
+      _id: 'doc2',
+      name: 'Dr. Elias Nieminen',
+      image: doc2,
+      speciality: 'General_physician',
+      degree: 'Licentiate of Medicine',
+      experience: '5 Years',
+      about: 'Dr. Nieminen focuses on holistic treatments and chronic condition management.',
+      fees: 45,
+      address: {
+        line1: 'Pohjoisesplanadi 21',
+        line2: 'Helsinki, Finland',
+      },
     },
     {
-        _id: 'doc3',
-        name: 'Dr. Martina Rossi',
-        image: doc3,
-        speciality: 'Dermatologist',
-        degree: 'Licentiate of Medicine',
-        experience: '1 Years',
-        about: 'Dr. Rossi specializes in treating skin conditions with modern techniques and personalized treatments.',
-        fees: 30,
-        address: {
-            line1: 'Rautatienkatu 8',
-            line2: 'Oulu, Finland'
-        }
+      _id: 'doc3',
+      name: 'Dr. Inka Lahti',
+      image: doc3,
+      speciality: 'General_physician',
+      degree: 'Licentiate of Medicine',
+      experience: '3 Years',
+      about: 'Dr. Lahti is known for her friendly care and effective general health treatments.',
+      fees: 40,
+      address: {
+        line1: 'Yliopistonkatu 5',
+        line2: 'Turku, Finland',
+      },
+    },
+  
+    // Gynecologist
+    {
+      _id: 'doc4',
+      name: 'Dr. Sofia Lindberg',
+      image: doc4,
+      speciality: 'Gynecologist',
+      degree: 'Licentiate of Medicine',
+      experience: '3 Years',
+      about: 'Dr. Lindberg provides compassionate and expert care, focusing on women’s health and wellness.',
+      fees: 60,
+      address: {
+        line1: 'Kauppakatu 10',
+        line2: 'Tampere, Finland',
+      },
     },
     {
-        _id: 'doc4',
-        name: 'Dr. Klaus Weber',
-        image: doc4,
-        speciality: 'Pediatricians',
-        degree: 'Licentiate of Medicine',
-        experience: '2 Years',
-        about: 'Dr. Weber has a warm approach to children’s healthcare with a focus on early diagnosis.',
-        fees: 40,
-        address: {
-            line1: 'Itäinen Pitkäkatu 14',
-            line2: 'Turku, Finland'
-        }
+      _id: 'doc5',
+      name: 'Dr. Ella Mäkinen',
+      image: doc5,
+      speciality: 'Gynecologist',
+      degree: 'Licentiate of Medicine',
+      experience: '6 Years',
+      about: 'Dr. Mäkinen specializes in reproductive health and prenatal care.',
+      fees: 65,
+      address: {
+        line1: 'Ratakatu 7',
+        line2: 'Helsinki, Finland',
+      },
     },
     {
-        _id: 'doc5',
-        name: 'Dr. Anna Müller',
-        image: doc5,
-        speciality: 'Gastroenterologist',
-        degree: 'Licentiate of Medicine',
-        experience: '4 Years',
-        about: 'Dr. Müller is passionate about helping patients with Gastroenterologist disorders through holistic approaches.',
-        fees: 50,
-        address: {
-            line1: 'Satakunnankatu 20',
-            line2: 'Tampere, Finland'
-        }
+      _id: 'doc6',
+      name: 'Dr. Aino Salmi',
+      image: doc6,
+      speciality: 'Gynecologist',
+      degree: 'Licentiate of Medicine',
+      experience: '4 Years',
+      about: 'Dr. Salmi offers modern gynecological treatments and hormone therapies.',
+      fees: 55,
+      address: {
+        line1: 'Kalevankatu 3',
+        line2: 'Espoo, Finland',
+      },
+    },
+  
+    // Dermatologist
+    {
+      _id: 'doc7',
+      name: 'Dr. Martina Rossi',
+      image: doc7,
+      speciality: 'Dermatologist',
+      degree: 'Licentiate of Medicine',
+      experience: '1 Year',
+      about: 'Dr. Rossi specializes in treating skin conditions with modern techniques and personalized treatments.',
+      fees: 30,
+      address: {
+        line1: 'Rautatienkatu 8',
+        line2: 'Oulu, Finland',
+      },
     },
     {
-        _id: 'doc6',
-        name: 'Dr. Pedro Alvarez',
-        image: doc6,
-        speciality: 'Gastroenterologist',
-        degree: 'Licentiate of Medicine',
-        experience: '4 Years',
-        about: 'Dr. Alvarez delivers top-level Gastroenterologist care backed by research and years of experience.',
-        fees: 50,
-        address: {
-            line1: 'Hallituskatu 5',
-            line2: 'Oulu, Finland'
-        }
-    }
-];
-
-
+      _id: 'doc8',
+      name: 'Dr. Mika Saarinen',
+      image: doc8,
+      speciality: 'Dermatologist',
+      degree: 'Licentiate of Medicine',
+      experience: '7 Years',
+      about: 'Dr. Saarinen offers expert diagnosis and treatment for all types of skin disorders.',
+      fees: 50,
+      address: {
+        line1: 'Annankatu 12',
+        line2: 'Helsinki, Finland',
+      },
+    },
+    {
+      _id: 'doc9',
+      name: 'Dr. Leena Korhonen',
+      image: doc9,
+      speciality: 'Dermatologist',
+      degree: 'Licentiate of Medicine',
+      experience: '2 Years',
+      about: 'Dr. Korhonen is passionate about cosmetic dermatology and patient confidence.',
+      fees: 45,
+      address: {
+        line1: 'Hämeenkatu 18',
+        line2: 'Tampere, Finland',
+      },
+    },
+  
+    // Gastroenterologist
+    {
+      _id: 'doc10',
+      name: 'Dr. Anna Müller',
+      image: doc10,
+      speciality: 'Gastroenterologist',
+      degree: 'Licentiate of Medicine',
+      experience: '4 Years',
+      about: 'Dr. Müller helps patients with digestive disorders through holistic approaches.',
+      fees: 50,
+      address: {
+        line1: 'Satakunnankatu 20',
+        line2: 'Tampere, Finland',
+      },
+    },
+    {
+      _id: 'doc11',
+      name: 'Dr. Pedro Alvarez',
+      image: doc11,
+      speciality: 'Gastroenterologist',
+      degree: 'Licentiate of Medicine',
+      experience: '4 Years',
+      about: 'Dr. Alvarez delivers top-level gastroenterological care backed by research.',
+      fees: 50,
+      address: {
+        line1: 'Hallituskatu 5',
+        line2: 'Oulu, Finland',
+      },
+    },
+    {
+      _id: 'doc12',
+      name: 'Dr. Satu Väisänen',
+      image: doc12,
+      speciality: 'Gastroenterologist',
+      degree: 'Licentiate of Medicine',
+      experience: '6 Years',
+      about: 'Dr. Väisänen focuses on IBS, nutrition, and long-term gut health.',
+      fees: 55,
+      address: {
+        line1: 'Puijonkatu 6',
+        line2: 'Kuopio, Finland',
+      },
+    },
+  ];
+  

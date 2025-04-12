@@ -44,7 +44,7 @@ const Doctors = () => {
           <p onClick={() => speciality === 'Gastroenterologist' ? navigate('/doctors') : navigate('/doctors/Gastroenterologist')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
             Gastroenterologist
           </p>
-          <p onClick={() => speciality === 'General physician' ? navigate('/doctors') : navigate('/doctors/General physician')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
+          <p onClick={() => speciality === 'General physician' ? navigate('/doctors') : navigate('/doctors/General_physician')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
             General Physician
           </p>
           <p onClick={() => speciality === 'Gynecologist' ? navigate('/doctors') : navigate('/doctors/Gynecologist')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">

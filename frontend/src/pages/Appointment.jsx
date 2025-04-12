@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { AppContext } from "@/context/AppContext";
 import DoctorDetails from "@/components/appointment/DoctorDetails";
 import BookingSlotPicker from "@/components/appointment/BookingSlotPicker";
+import RelatedDoctors from "@/components/appointment/RelatedDoctors";
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -20,6 +21,7 @@ const Appointment = () => {
       <div>
         <DoctorDetails />
         <BookingSlotPicker />
+        <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
       </div>
     )
   );
