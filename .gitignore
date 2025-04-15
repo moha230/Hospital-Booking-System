@@ -1,56 +1,55 @@
-# --- Deno ---
-deno.lock
-deno_dir/
+# --- Global OS / Editor ignores ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+*.log
+nohup.out
 
-# --- Node.js / npm / Vite ---
-node_modules/
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
-.vite/
-dist/
-build/
-.temp/
-
-# --- Env files ---
+# --- Global Env / Secrets ---
 .env
 .env.*
 !.env.example
 
-# --- Logs ---
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-nohup.out
+# --- Frontend (Vite, React, npm, etc.) ---
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/package-lock.json
+frontend/pnpm-lock.yaml
+frontend/yarn.lock
+frontend/*.log
+frontend/.env
+frontend/.env.*
 
-# --- IDE / Editor / OS ---
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
+# --- Backend (Deno, Node, Hono, etc.) ---
+backend/node_modules/
+backend/dist/
+backend/.vite/
+backend/package-lock.json
+backend/pnpm-lock.yaml
+backend/yarn.lock
+backend/deno.lock
+backend/deno_dir/
+backend/*.log
+backend/.env
+backend/.env.*
 
-# --- System generated ---
-*.pid
-*.seed
-*.pid.lock
-
-# --- Testing / Coverage ---
+# --- Coverage / Reports ---
 coverage/
 *.lcov
 
-# --- Misc ---
-*.tgz
-*.bak
-*.tmp
-
-# --- Optional: local dev tools ---
+# --- DB / Local dev files ---
 *.sqlite
 *.db
+*.seed
 *.local
+
+# --- Build / Temp ---
+build/
+.temp/
+*.tmp
+*.bak
+*.tgz
