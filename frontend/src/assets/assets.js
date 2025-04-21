@@ -23,6 +23,7 @@ import doc11 from './homepagedoctors/doc6.png';
 import doc12 from './homepagedoctors/doc3.png';
 import verified_icon from './icons/verified_icon.svg'
 import info_icon from './icons/info_icon.svg'
+import contact_image from './contact_image.png'
 
 
 
@@ -38,6 +39,7 @@ export const assets = {
     verified_icon,
     info_icon,
     about_image,
+    contact_image,
     specialists: {
         Dermatologist,
         Gastroenterologist,
