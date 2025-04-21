@@ -73,6 +73,7 @@ export const specialityData = [
 
 
 export const doctors = [
+  // will be changed  on sunday  before code review . this mock data will have to be the same as the backend models 
     // General Physician
     {
       _id: 'doc1',
