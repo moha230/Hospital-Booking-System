@@ -9,8 +9,9 @@ const Profile = () => {
     email: "jumaJuna@gmail.com",
     phone: "+3589464855",
     address: {
-      line1: "Pohjoisesplanadi 21",
-      line2: "Helsinki, Finland",
+      street: "Pohjoisesplanadi 21",
+      city: "Helsinki,",
+      country: 'Suomi'
     },
     gender: "Male",
     dob: "1986-01-20",
@@ -68,7 +69,7 @@ const Profile = () => {
           {/* Address  section maybe moved to component */}
           <p className='font-medium'>Address</p>
           {isEdit ? (
-            // Input field to edit address  when in edit mode address line1 and line2
+            // Input field to edit address  when in edit mode address street  city and country
             <p>
               <input
               className='bg-gray-50'
@@ -76,28 +77,39 @@ const Profile = () => {
                 onChange={(e) =>
                   setUserData((prev) => ({
                     ...prev,
-                    address: { ...prev.address, line1: e.target.value },
+                    address: { ...prev.address, street: e.target.value },
                   }))
                 }
-                value={userData.address.line1}
+                value={userData.address.street}
               />
               <br />
               <input
                 onChange={(e) =>
                   setUserData((prev) => ({
                     ...prev,
-                    address: { ...prev.address, line1: e.target.value },
+                    address: { ...prev.address, city: e.target.value },
                   }))
                 }
-                value={userData.address.line2}
+                value={userData.address.city}
+                type="text"
+              />
+              <br />
+              <input
+                onChange={(e) =>
+                  setUserData((prev) => ({
+                    ...prev,
+                    address: { ...prev.address, country: e.target.value },
+                  }))
+                }
+                value={userData.address.country}
                 type="text"
               />
             </p>
           ) : (
             <p>
-              {userData.address.line1}
+              {userData.address.street}
               <br />
-              {userData.address.line2}
+              {userData.address.city}
             </p>
           )}
         </div>
