@@ -19,7 +19,7 @@ Each doctor has the following properties:
 - Consultation fees
 - Available timings
 - Location
-- Patient reviews
+- **Patient reviews**
 
 ---
 
