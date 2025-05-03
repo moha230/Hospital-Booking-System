@@ -24,7 +24,7 @@ const CompanyIntro = () => (
         designed to make your journey smooth from start to finish.
       </p>
       <p>
-        We’re more than just a booking app — we are a community driven by
+        we are a community driven by
         innovation, reliability, and care. Our growing network includes
         experienced dermatologists, general physicians, gastroenterologists, and
         gynecologists, all ready to support your health journey.
