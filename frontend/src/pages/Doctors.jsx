@@ -35,7 +35,7 @@ const Doctors = () => {
         Look for a specialist
       </p>
 
-      {/* Horizontal list of specialities */}
+      {/* Horizontal list of specialities Use Slugs?? */   }  
       <div className="sm:flex-row items-start gap-5 mt-5">
         <div className="flex justify-center items-center gap-5 mt-5 whitespace-nowrap">
           <p onClick={() => speciality === 'Dermatologist' ? navigate('/doctors') : navigate('/doctors/Dermatologist')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
@@ -44,7 +44,7 @@ const Doctors = () => {
           <p onClick={() => speciality === 'Gastroenterologist' ? navigate('/doctors') : navigate('/doctors/Gastroenterologist')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
             Gastroenterologist
           </p>
-          <p onClick={() => speciality === 'General physician' ? navigate('/doctors') : navigate('/doctors/General_physician')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
+          <p onClick={() => speciality === 'General Physician' ? navigate('/doctors') : navigate('/doctors/General Physician')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
             General Physician
           </p>
           <p onClick={() => speciality === 'Gynecologist' ? navigate('/doctors') : navigate('/doctors/Gynecologist')} className="w-[94vw] sm:w-auto px-6 py-2 border border-gray-300 rounded-full cursor-pointer transition-all bg-white hover:bg-primary flex justify-center items-center text-center">
