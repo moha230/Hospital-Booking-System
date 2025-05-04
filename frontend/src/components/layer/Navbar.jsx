@@ -71,6 +71,7 @@ const Navbar = () => {
             Register Account
           </button>
         )}
+        
       </div>
     </div>
   );
