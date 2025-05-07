@@ -13,7 +13,7 @@ connectDB();
 connectCloudinary();
 
 
-// middlewares 
+
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use(cors());
 
 
 // Define API endpoints using base URL: http://localhost:3000/api/v1/admin
-// This means all routes inside `adminRouter` will be prefixed with `/api/v1/admin`
+// localhost:3000/api/v1/admin
 app.use("/api/v1/admin", adminRouter);
 
 
