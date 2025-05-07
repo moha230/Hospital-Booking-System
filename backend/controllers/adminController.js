@@ -1,7 +1,7 @@
 // import { addUserService } from '../services/adminService.js'; // Import the service
 import validator from "validator";
 import bcrypt from "bcrypt";
-import userModel from '../models/usersModel.js';
+import doctorModel from '../models/doctorModel.js';
 //importing jwt 
 import jwt from 'jsonwebtoken';
 
@@ -74,7 +74,7 @@ const addUser = async (req, res) => {
       date: Date.now()
     }
 
-    const newUser = new userModel(userData)
+    const newUser = new doctorModel(userData)
     await newUser.save()
     res.json({ success: true, message: 'User Added' })
 
