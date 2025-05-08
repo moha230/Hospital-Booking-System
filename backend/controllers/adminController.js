@@ -1,26 +1,50 @@
-
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import { createDoctor } from "../services/adminService.js";
-import { validateDoctorInput } from '../utils/validateDoctorData.js';
+import validator from "validator";
+
+//controller function for admin login 
+
+const loginAdmin = async (req, res) => {
+  try {
+
+    const { email, password } = req.body
+
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+      const token = jwt.sign(email + password, process.env.JWT_SECRET)
+      res.json({ success: true, token })
+    } else {
+      res.json({ success: false, message: "Invalid credentials" })
+    }
+
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
+
+}
 
 // controller function to addDoctors to the database  
 const adminAddDoctor = async (req, res) => {
   try {
 
 
-
-
-
     const { name, email, password, speciality, degree, experience, about, fees, address } = req.body
     const imageFile = req.file
 
     //validate input 
-    const validation = validateDoctorInput({ name, email, password, speciality, degree, experience, about, fees, address })
-    if (!validation.success) {
-      return res.json({ success: false, message: validation.message })
+    if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
+      return res.json({ success: false, message: "Missing Details" })
     }
-
+    // Validat that  email format is correct
+    if (!validator.isEmail(email)) {
+      return { success: false, message: "Email not valid" };
+    }
+    //validat the password format is correct 
+    if (password.length < 16) {
+      return { success: false, message: "Please enter a strong password" };
+    }
 
 
     // hash the user password 
@@ -30,7 +54,7 @@ const adminAddDoctor = async (req, res) => {
     // upload image to cloudinary database 
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
     const imageUrl = imageUpload.secure_url
-    console.log("Cloudinary secure_url:", imageUpload.secure_url);
+
 
     //service add all the infromation to database 
     const doctorData = {
@@ -48,9 +72,16 @@ const adminAddDoctor = async (req, res) => {
     }
 
 
-    //function to create doctors in the data base 
-    await createDoctor(doctorData);
-    res.status(201).json({ message: 'Doctor added successfully.' });
+
+    // function to create doctors in the database
+    const result = await createDoctor(doctorData);
+
+    if (!result.success) {
+      return res.status(400).json({ success: false, message: result.message });
+    }
+
+    res.status(201).json({ success: true, message: 'Doctor added successfully.' });
+    ;
 
   } catch (error) {
     console.error('Error adding doctor:', error);
@@ -59,4 +90,8 @@ const adminAddDoctor = async (req, res) => {
 }
 
 
-export { adminAddDoctor };
+
+
+
+
+export { adminAddDoctor, loginAdmin };

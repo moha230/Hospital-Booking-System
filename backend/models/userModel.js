@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import defaultUserImage from "../assets/defaultUserImage";
+
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
