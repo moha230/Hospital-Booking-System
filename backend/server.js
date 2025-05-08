@@ -15,9 +15,14 @@ connectCloudinary();
 
 
 
+
 // Middleware to parse JSON request bodies
-app.use(express.json());
+
 app.use(cors());
+app.use(express.json());
+
+
+
 
 
 // Define API endpoints using base URL: http://localhost:3000/api/v1/admin

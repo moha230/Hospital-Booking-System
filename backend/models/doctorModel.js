@@ -10,13 +10,13 @@ const doctorsSchema = new mongoose.Schema({
   experience: { type: String, required: true },
   about: { type: String, required: true },
   fees: { type: Number, required: true },
-  available: { type: Boolean, required: true },
+  available: { type: Boolean, default: true },
   address: {
     street: { type: String, required: true },
     city: { type: String, required: true },
     country: { type: String, required: true },
   },
-  date: { type: Number, required: true },
+  date: { type: Number, default: Date.now },
   slots_booked: { type: Object, default: {} }
 }, { minimize: false });
 
