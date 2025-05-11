@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import Login from './pages/Login';
 
-function App() {
+const App = () => {
   return (
-    <div>App</div>
-  )
+    <div>
+      <Login />
+    </div>
+  );
 }
 
-export default App
+export default App;
