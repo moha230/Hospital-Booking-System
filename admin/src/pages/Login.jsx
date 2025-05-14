@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { assets } from "@/assets/assets"; // Assuming you will use icons later
+//import { assets } from "@/assets/assets";
 
 const Login = () => {
   const [state, setState] = useState("Admin");
