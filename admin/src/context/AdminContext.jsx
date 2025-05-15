@@ -9,7 +9,7 @@ export const AdminContext = createContext();
 const AdminContextProvider = (props) => {
 
 //admin token and settoken with intitial string
-const [adminToken, setAdmintoken] = useState("");
+const [adminToken, setAdminToken] = useState("");
 
 
 // Get the backend URL from the environment variables
@@ -18,7 +18,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL
 // The `value` object will made avialable for all childe components through context.
   const value = {
     adminToken,
-    setAdmintoken,
+    setAdminToken,
     backendUrl 
   };
 
