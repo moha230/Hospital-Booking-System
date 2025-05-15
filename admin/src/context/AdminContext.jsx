@@ -8,8 +8,8 @@ export const AdminContext = createContext();
 
 const AdminContextProvider = (props) => {
 
-//admin token and settoken with intitial string
-const [adminToken, setAdminToken] = useState("");
+//admin token and settoken with intitial string check local storage 
+const [adminToken, setAdminToken] = useState(localStorage.getItem('adminToken')?localStorage.getItem('adminToken'):'');
 
 
 // Get the backend URL from the environment variables
