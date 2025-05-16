@@ -21,13 +21,13 @@ function App() {
 const {adminToken} = useContext(AdminContext)
 
   return adminToken ? (
-    <div>
+    <div className='bg-background'>
      
       <ToastContainer/>
       <Navbar/>
       <div className='flex flex-row-reverse min-h-screen'>
         <Sidebar/>
-        <div className='flex-1 p-4'>
+        <div className='flex-1 p-2'>
         <Routes>
           <Route path='/' element={<></>} />
           <Route path='/admin-dashboard' element={<Dashboard />} />
