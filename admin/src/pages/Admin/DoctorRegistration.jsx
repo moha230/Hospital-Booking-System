@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { assets } from "../../assets/assets";
 
 const AddDoctor = () => {
+
+  //creating state variable to store the data that is been registered
+  const [docImg, setDocImg] = useState(null)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [experience, setExperience] = useState('1 Year')
+  const [fees, setFees] = useState('')
+  const [about, setAbout] = useState('')
+  const [speciality, setSpeciality] = useState('General physician')
+  const [degree, setDegree] = useState('')
+  const [addressStreet, setAddressStreet] = useState('')
+  const [addressCity, setAddressCity] = useState('')
+  const [addressCountry, setAddressCountry] = useState('')
+
   return (
     <form className="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 space-y-8">
       <h2 className="text-3xl font-bold text-gray-800 text-center">
@@ -12,12 +27,12 @@ const AddDoctor = () => {
       <div className="flex flex-col items-center">
         <label htmlFor="doc-img" className="cursor-pointer hover:opacity-90">
           <img
-            src={assets.upload_area}
+            src={docImg ? URL.createObjectURL(docImg) : assets.upload_area} 
             alt="Upload Area"
             className="w-32 h-32 object-cover rounded-full border-2 border-gray-300"
           />
         </label>
-        
+
         <label htmlFor="doc-img" className="mt-2 cursor-pointer">
           <img
             src={assets.camera_icon}
@@ -25,7 +40,7 @@ const AddDoctor = () => {
             className="w-5 h-5 mx-auto hover:opacity-80"
           />
         </label>
-        <input type="file" id="doc-img" hidden />
+        <input onChange={(e) => setDocImg(e.target.files[0])}  type="file" id="doc-img" hidden />
       </div>
 
       {/* Personal information */}
