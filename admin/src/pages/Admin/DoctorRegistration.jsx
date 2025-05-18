@@ -1,10 +1,12 @@
 import React from "react";
 import { assets } from "../../assets/assets";
 
-const  AddDoctor = () => {
+const AddDoctor = () => {
   return (
     <form className="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 space-y-8">
-      <h2 className="text-3xl font-bold text-gray-800 text-center">Doctor Registration Form</h2>
+      <h2 className="text-3xl font-bold text-gray-800 text-center">
+        Doctor Registration Form
+      </h2>
 
       {/* Profile picture upload */}
       <div className="flex flex-col items-center">
@@ -15,11 +17,15 @@ const  AddDoctor = () => {
             className="w-32 h-32 object-cover rounded-full border-2 border-gray-300"
           />
         </label>
+        
+        <label htmlFor="doc-img" className="mt-2 cursor-pointer">
+          <img
+            src={assets.camera_icon}
+            alt="Change Icon"
+            className="w-5 h-5 mx-auto hover:opacity-80"
+          />
+        </label>
         <input type="file" id="doc-img" hidden />
-        <p className="text-sm text-gray-600 mt-2 text-center">
-          {/* Put an icon its better do it later when i come back from work  */}
-          Click to change profile picture
-        </p>
       </div>
 
       {/* Personal information */}
@@ -223,6 +229,6 @@ const  AddDoctor = () => {
       </div>
     </form>
   );
-}
+};
 
 export default AddDoctor;

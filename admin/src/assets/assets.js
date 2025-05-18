@@ -3,6 +3,7 @@ import admin_logo from './admin_logo.svg'
 import appointment_icon from './appointment_icon.svg'
 import appointments_icon from './appointments_icon.svg'
 import cancel_icon from './cancel_icon.svg'
+import camera_icon from './camera_icon.svg'
 import checked_icon from './checked_icon.svg'
 import checklist from './checklist.svg'
 import doctor_icon from './doctor_icon.svg'
@@ -21,6 +22,7 @@ export const assets = {
     admin_logo,
     appointment_icon,
     appointments_icon,
+    camera_icon,
     cancel_icon,
     checked_icon,
     checklist,
