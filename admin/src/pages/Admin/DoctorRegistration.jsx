@@ -2,20 +2,19 @@ import React, { useState } from "react";
 import { assets } from "../../assets/assets";
 
 const AddDoctor = () => {
-
   //creating state variable to store the data that is been registered
-  const [docImg, setDocImg] = useState(null)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [experience, setExperience] = useState('1 Year')
-  const [fees, setFees] = useState('')
-  const [about, setAbout] = useState('')
-  const [speciality, setSpeciality] = useState('General physician')
-  const [degree, setDegree] = useState('')
-  const [addressStreet, setAddressStreet] = useState('')
-  const [addressCity, setAddressCity] = useState('')
-  const [addressCountry, setAddressCountry] = useState('')
+  const [docImg, setDocImg] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [experience, setExperience] = useState("1 Year");
+  const [fees, setFees] = useState("");
+  const [about, setAbout] = useState("");
+  const [speciality, setSpeciality] = useState("Select speciality");
+  const [degree, setDegree] = useState("");
+  const [addressStreet, setAddressStreet] = useState("");
+  const [addressCity, setAddressCity] = useState("");
+  const [addressCountry, setAddressCountry] = useState("");
 
   return (
     <form className="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 space-y-8">
@@ -27,7 +26,7 @@ const AddDoctor = () => {
       <div className="flex flex-col items-center">
         <label htmlFor="doc-img" className="cursor-pointer hover:opacity-90">
           <img
-            src={docImg ? URL.createObjectURL(docImg) : assets.upload_area} 
+            src={docImg ? URL.createObjectURL(docImg) : assets.upload_area}
             alt="Upload Area"
             className="w-32 h-32 object-cover rounded-full border-2 border-gray-300"
           />
@@ -40,7 +39,12 @@ const AddDoctor = () => {
             className="w-5 h-5 mx-auto hover:opacity-80"
           />
         </label>
-        <input onChange={(e) => setDocImg(e.target.files[0])}  type="file" id="doc-img" hidden />
+        <input
+          onChange={(e) => setDocImg(e.target.files[0])}
+          type="file"
+          id="doc-img"
+          hidden
+        />
       </div>
 
       {/* Personal information */}
@@ -57,6 +61,8 @@ const AddDoctor = () => {
               Name
             </label>
             <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
               type="text"
               id="name"
               placeholder="John Doe"
@@ -72,6 +78,8 @@ const AddDoctor = () => {
               Email
             </label>
             <input
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
               type="email"
               id="email"
               placeholder="john@example.com"
@@ -87,6 +95,8 @@ const AddDoctor = () => {
               Password
             </label>
             <input
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
               type="password"
               id="password"
               placeholder="********"
@@ -102,6 +112,8 @@ const AddDoctor = () => {
               Degree
             </label>
             <input
+              onChange={(e) => setDegree(e.target.value)}
+              value={degree}
               type="text"
               id="degree"
               placeholder="MBBS, MD"
@@ -125,12 +137,14 @@ const AddDoctor = () => {
               Experience
             </label>
             <select
+              onChange={(e) => setExperience(e.target.value)}
+              value={experience}
               id="experience"
               className="w-full mt-1 border rounded-md p-2"
               required
             >
               <option value="">Select experience</option>
-              {[...Array(10)].map((_, i) => (
+              {[...Array(20)].map((_, i) => (
                 <option key={i + 1} value={`${i + 1} Year`}>
                   {i + 1} {i + 1 === 1 ? "Year" : "Years"}
                 </option>
@@ -145,6 +159,8 @@ const AddDoctor = () => {
               Consultation Cost ($)
             </label>
             <input
+              onChange={(e) => setFees(e.target.value)}
+              value={fees}
               type="number"
               id="cost"
               placeholder="100"
@@ -160,6 +176,8 @@ const AddDoctor = () => {
               Speciality
             </label>
             <select
+              onChange={(e) => setSpeciality(e.target.value)}
+              value={speciality}
               id="speciality"
               className="w-full mt-1 border rounded-md p-2"
               required
@@ -186,6 +204,8 @@ const AddDoctor = () => {
               Street
             </label>
             <input
+              onChange={(e) => setAddressStreet(e.target.value)}
+              value={addressStreet}
               type="text"
               id="street"
               placeholder="123 Main St"
@@ -200,6 +220,8 @@ const AddDoctor = () => {
               City
             </label>
             <input
+              onChange={(e) => setAddressCity(e.target.value)}
+              value={addressCity}
               type="text"
               id="city"
               placeholder="Dar es Salaam"
@@ -214,6 +236,8 @@ const AddDoctor = () => {
               Country
             </label>
             <input
+              onChange={(e) => setAddressCountry(e.target.value)}
+              value={addressCountry}
               type="text"
               id="country"
               placeholder="Tanzania"
@@ -227,6 +251,8 @@ const AddDoctor = () => {
       <div>
         <h3 className="text-xl font-semibold text-gray-700 mb-4">About</h3>
         <textarea
+          onChange={(e) => setAbout(e.target.value)}
+          value={about}
           id="about"
           placeholder="Information about doctor"
           className="w-full h-32 border rounded-md p-2"
