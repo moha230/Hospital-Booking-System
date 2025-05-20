@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-import { specialityData } from "@/assets/assets";
+import { specialityData } from "../../assets/index.js";
 
 function Speciality() {
   return (

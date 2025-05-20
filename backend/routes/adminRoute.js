@@ -1,5 +1,5 @@
 import express from 'express';
-import { adminAddDoctor,loginAdmin } from '../controllers/adminController.js';
+import { adminRegisterDoctor,loginAdmin } from '../controllers/adminController.js';
 import upload from "../middlewares/multer.js";
 import authAdmin from '../middlewares/authAdmin.js';
 
@@ -11,7 +11,7 @@ const adminRouter = express.Router();
 adminRouter.post('/login', loginAdmin);
 
 // Route to add a new doctor
-adminRouter.post('/add-doctor',authAdmin, upload.single('image'), adminAddDoctor);
+adminRouter.post('/doctor-registration',authAdmin, upload.single('image'), adminRegisterDoctor);
 
 
 

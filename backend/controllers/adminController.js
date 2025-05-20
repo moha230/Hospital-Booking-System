@@ -25,8 +25,8 @@ const loginAdmin = async (req, res) => {
 
 }
 
-// controller function to addDoctors to the database  
-const adminAddDoctor = async (req, res) => {
+// controller function to adminRegisterDoctor to the database  
+const adminRegisterDoctor = async (req, res) => {
   try {
 
 
@@ -94,4 +94,4 @@ const adminAddDoctor = async (req, res) => {
 
 
 
-export { adminAddDoctor, loginAdmin };
+export { adminRegisterDoctor, loginAdmin };

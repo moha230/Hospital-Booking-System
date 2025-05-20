@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { assets } from "@/assets/assets";
+import { assets } from "../../assets/index.js";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -49,7 +49,7 @@ const Footer = () => {
           <h2 className="text-lg font-semibold mb-4 uppercase">Contact</h2>
           <ul className="flex flex-col gap-3 text-sm text-textLight">
             <li>+44 20 7946 0958</li>
-            <li>contact@unix-doctors.eu</li>
+            <li>contact.unix-doctors.eu</li>
             <li>Berlin, Germany</li>
             <li>VAT ID: EU123456789</li>
           </ul>

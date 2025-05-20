@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { assets } from "@/assets/assets";
+import { assets } from "../assets";
 
 const Profile = () => {
   //state to hold user data will be connected to the backend in the future
   const [userData, setUserData] = useState({
     name: "Juma Jana",
     image: assets.profile_pic,
-    email: "jumaJuna@gmail.com",
+    email: "jumaJuna.gmail.com",
     phone: "+3589464855",
     address: {
       street: "Pohjoisesplanadi 21",
       city: "Helsinki,",
-      country: 'Suomi'
+      country: "Suomi",
     },
     gender: "Male",
     dob: "1986-01-20",
@@ -55,7 +55,7 @@ const Profile = () => {
           {isEdit ? (
             // Input field to edit phone number when in edit mode
             <input
-            className='bg-gray-50 max-w-52' 
+              className="bg-gray-50 max-w-52"
               type="tel"
               onChange={(e) =>
                 setUserData((prev) => ({ ...prev, phone: e.target.value }))
@@ -64,15 +64,15 @@ const Profile = () => {
             />
           ) : (
             // Show phone number as text when not in edit mode
-            <p className='text-green-500'>{userData.phone}</p>
+            <p className="text-green-500">{userData.phone}</p>
           )}
           {/* Address  section maybe moved to component */}
-          <p className='font-medium'>Address</p>
+          <p className="font-medium">Address</p>
           {isEdit ? (
             // Input field to edit address  when in edit mode address street  city and country
             <p>
               <input
-              className='bg-gray-50'
+                className="bg-gray-50"
                 type="text"
                 onChange={(e) =>
                   setUserData((prev) => ({
@@ -116,12 +116,12 @@ const Profile = () => {
       </div>
       <div>
         {/* basic information section. maybe turn it to component?  */}
-        <p className='text-[#797979] underline mt-3'>Basic information</p>
-        <div className='grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-gray-600'>
-          <p className='font-medium'>Gender</p>
+        <p className="text-[#797979] underline mt-3">Basic information</p>
+        <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-gray-600">
+          <p className="font-medium">Gender</p>
           {isEdit ? (
             <select
-            className='max-w-20 bg-gray-50' 
+              className="max-w-20 bg-gray-50"
               onChange={(e) =>
                 setUserData((prev) => ({ ...prev, gender: e.target.value }))
               }
@@ -133,12 +133,12 @@ const Profile = () => {
               <option value="Others">Others</option>
             </select>
           ) : (
-            <p className='text-gray-500'>{userData.gender}</p>
+            <p className="text-gray-500">{userData.gender}</p>
           )}
-          <p className='font-medium' >Date of birth</p>
+          <p className="font-medium">Date of birth</p>
           {isEdit ? (
             <input
-            className='max-w-28 bg-gray-50'
+              className="max-w-28 bg-gray-50"
               type="date"
               onChange={(e) =>
                 setUserData((prev) => ({ ...prev, dob: e.target.value }))
@@ -146,15 +146,25 @@ const Profile = () => {
               value={userData.dob}
             />
           ) : (
-            <p  className='text-gray-500' >{userData.dob}</p>
+            <p className="text-gray-500">{userData.dob}</p>
           )}
         </div>
         {/*edit button section */}
-        <div className='mt-20'>
+        <div className="mt-20">
           {isEdit ? (
-            <button className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all' onClick={() => setIsEdit(false)}>Save information</button>
+            <button
+              className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
+              onClick={() => setIsEdit(false)}
+            >
+              Save information
+            </button>
           ) : (
-            <button className='border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all' onClick={() => setIsEdit(true)}>Edit information</button>
+            <button
+              className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
+              onClick={() => setIsEdit(true)}
+            >
+              Edit information
+            </button>
           )}
         </div>
       </div>

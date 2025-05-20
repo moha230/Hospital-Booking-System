@@ -1,5 +1,5 @@
 import React from "react";
-import { assets } from "@/assets/assets";
+import { assets } from "../../assets/index.js";
 
 const CompanyIntro = () => (
   <div className="my-10 flex flex-col md:flex-row gap-12">

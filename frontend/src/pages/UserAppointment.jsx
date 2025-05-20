@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { AppContext } from "../context/AppContext.jsx";
 
 const UserAppointment = () => {
   const { doctors } = useContext(AppContext);
 
   return (
     <div className="px-4 sm:px-8 py-8">
-      <p className="pb-4 text-2xl font-semibold text-green-600 border-b">Your Appointments</p>
+      <p className="pb-4 text-2xl font-semibold text-green-600 border-b">
+        Your Appointments
+      </p>
       <div className="grid gap-6 mt-6">
         {doctors.slice(0, 6).map((item, index) => (
           <div
@@ -22,13 +24,18 @@ const UserAppointment = () => {
             </div>
 
             <div className="flex-1 p-4 text-sm text-[#5E5E5E]">
-              <p className="text-[#262626] text-lg font-semibold mb-1">{item.name}</p>
+              <p className="text-[#262626] text-lg font-semibold mb-1">
+                {item.name}
+              </p>
               <p className="mb-1 capitalize">{item.speciality}</p>
               <p className="text-[#464646] font-medium mt-2">Address:</p>
               <p>{item.address.street}</p>
-              <p>{item.address.city}, {item.address.country}</p>
+              <p>
+                {item.address.city}, {item.address.country}
+              </p>
               <p className="mt-2">
-                <span className="text-[#3C3C3C] font-medium">Date & Time:</span> 3.5.2025 klo 09:00
+                <span className="text-[#3C3C3C] font-medium">Date & Time:</span>{" "}
+                3.5.2025 klo 09:00
               </p>
             </div>
 

@@ -1,6 +1,6 @@
 import React from "react";
-import CompanyIntro from "@/components/about/CompanyIntro";
-import BenefitsSection from "@/components/about/BenefitsSection";
+import CompanyIntro from "../components/about/CompanyIntro.jsx";
+import BenefitsSection from "../components/about/BenefitsSection.jsx";
 
 const About = () => {
   return (

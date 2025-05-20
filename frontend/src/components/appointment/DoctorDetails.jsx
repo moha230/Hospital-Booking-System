@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AppContext } from "@/context/AppContext";
-import { assets } from "@/assets/assets";
+import { AppContext } from "../../context/AppContext.jsx";
+import { assets } from "../../assets/index.js";
 
 const DoctorDetails = () => {
   const { docId } = useParams();

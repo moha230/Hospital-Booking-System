@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets";
+import { AdminContext } from "../../context/AdminContext";
+import { toast } from "react-toastify";
+import { AppContext } from "../../context/AppContext";
+import axios from "axios";
 
-const AddDoctor = () => {
+const DoctorRegistration = () => {
   //creating state variable to store the data that is been registered
   const [docImg, setDocImg] = useState(null);
   const [name, setName] = useState("");
@@ -16,8 +20,76 @@ const AddDoctor = () => {
   const [addressCity, setAddressCity] = useState("");
   const [addressCountry, setAddressCountry] = useState("");
 
+  //get backend url and admin token
+
+  const { adminToken,backendUrl } = useContext(AdminContext);
+
+  //function
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      if (!docImg) {
+        return toast.error("Image is not selected");
+      }
+
+      //Create form data
+      const formData = new FormData();
+
+      // Save the image to the backend
+      formData.append("image", docImg);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("experience", experience);
+      formData.append("fees", Number(fees));
+      formData.append("about", about);
+      formData.append("speciality", speciality);
+      formData.append("degree", degree);
+      formData.append(
+        "address",
+        JSON.stringify({
+          street: addressStreet,
+          city: addressCity,
+          country: addressCountry,
+        })
+      );
+
+      //Connect to the backend
+      const { data } = await axios.post(
+        backendUrl + "/api/v1/admin/doctor-registration",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        setDocImg(false);
+        setName("");
+        setPassword("");
+        setEmail("");
+        setDegree("");
+        setAbout("");
+        setFees("");
+        setAddressStreet("");
+        setAddressCity("");
+        setAddressCountry("");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   return (
-    <form className="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 space-y-8">
+    <form
+      onSubmit={onSubmitHandler}
+      className="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-8 space-y-8"
+    >
       <h2 className="text-3xl font-bold text-gray-800 text-center">
         Doctor Registration Form
       </h2>
@@ -272,4 +344,4 @@ const AddDoctor = () => {
   );
 };
 
-export default AddDoctor;
+export default DoctorRegistration;
