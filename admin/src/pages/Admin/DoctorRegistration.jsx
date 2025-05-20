@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets";
-import { AdminContext } from "../../context/AdminContext";
+import { AdminContext } from "../../context/AdminContext.jsx";
 import { toast } from "react-toastify";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
@@ -54,15 +54,15 @@ const DoctorRegistration = () => {
         })
       );
 
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+
       //Connect to the backend
       const { data } = await axios.post(
-        backendUrl + "/api/v1/admin/doctor-registration",
+        `${backendUrl}api/v1/admin/doctor-registration`,
         formData,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${adminToken}` } }
       );
 
       if (data.success) {
