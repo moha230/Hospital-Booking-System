@@ -7,7 +7,7 @@ import axios from "axios";
 
 const DoctorRegistration = () => {
   //creating state variable to store the data that is been registered
-  const [docImg, setDocImg] = useState(null);
+  const [docImg, setDocImg] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,9 +65,11 @@ const DoctorRegistration = () => {
         { headers: { Authorization: `Bearer ${adminToken}` } }
       );
 
+      // console.log(data)
+
       if (data.success) {
         toast.success(data.message);
-        setDocImg(false);
+        setDocImg(null);
         setName("");
         setPassword("");
         setEmail("");
@@ -84,6 +86,8 @@ const DoctorRegistration = () => {
       toast.error(error.message);
     }
   };
+
+
 
   return (
     <form
@@ -171,7 +175,7 @@ const DoctorRegistration = () => {
               value={password}
               type="password"
               id="password"
-              placeholder="********"
+              placeholder="***********"
               required
               className="w-full mt-1 border rounded-md p-2"
             />
@@ -188,7 +192,7 @@ const DoctorRegistration = () => {
               value={degree}
               type="text"
               id="degree"
-              placeholder="MBBS, MD"
+              placeholder="degree"
               className="w-full mt-1 border rounded-md p-2"
             />
           </div>

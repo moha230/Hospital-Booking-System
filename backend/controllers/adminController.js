@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import { createDoctor } from "../services/adminService.js";
 import validator from "validator";
-
+import doctorModel from "../models/doctorModel.js";
 //controller function for admin login 
 
 const loginAdmin = async (req, res) => {
@@ -39,25 +39,25 @@ const adminRegisterDoctor = async (req, res) => {
     }
     // Validat that  email format is correct
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Email not valid" }); 
+      return res.status(400).json({ success: false, message: "Email not valid" });
     }
-    //validat the password format is correct 
-   
-    if (password.length < 16) {
-      return res.status(400).json({ success: false, message: "Please enter a strong password" }); 
-    }
-    
+    //Validat the password format is correct 
 
-    // hash the user password 
+    if (password.length < 16) {
+      return res.status(400).json({ success: false, message: "Please enter a strong password" });
+    }
+
+
+    // Hash the user password 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    // upload image to cloudinary database 
+    // Upload image to cloudinary database 
     const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
     const imageUrl = imageUpload.secure_url
 
 
-    //service add all the infromation to database 
+    //Service add all the infromation to database 
     const doctorData = {
       name,
       email,
@@ -74,7 +74,7 @@ const adminRegisterDoctor = async (req, res) => {
 
 
 
-    // function to create doctors in the database
+    // Function to register / create doctors in the database
     const result = await createDoctor(doctorData);
 
     if (!result.success) {
@@ -86,7 +86,21 @@ const adminRegisterDoctor = async (req, res) => {
 
   } catch (error) {
     console.error('Error adding doctor:', error);
-    res.status(500).json({ message: 'Server error.' });
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+// function controler to list all doctors 
+
+const adminListDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({}, '-password')
+    res.status(200).json({ success: true, date: doctors });
+
+  } catch (error) {
+    console.log('Error listing doctors', error)
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
 
@@ -94,5 +108,4 @@ const adminRegisterDoctor = async (req, res) => {
 
 
 
-
-export { adminRegisterDoctor, loginAdmin };
+export { adminRegisterDoctor, loginAdmin, adminListDoctors };
