@@ -39,13 +39,14 @@ const adminRegisterDoctor = async (req, res) => {
     }
     // Validat that  email format is correct
     if (!validator.isEmail(email)) {
-      return { success: false, message: "Email not valid" };
+      return res.status(400).json({ success: false, message: "Email not valid" }); 
     }
     //validat the password format is correct 
+   
     if (password.length < 16) {
-      return { success: false, message: "Please enter a strong password" };
+      return res.status(400).json({ success: false, message: "Please enter a strong password" }); 
     }
-
+    
 
     // hash the user password 
     const salt = await bcrypt.genSalt(10);
