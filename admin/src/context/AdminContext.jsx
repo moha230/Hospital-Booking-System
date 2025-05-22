@@ -20,18 +20,15 @@ const AdminContextProvider = (props) => {
   const adminListAllDoctors = async () => {
     try {
       const { data } = await axios.post(
-        `${backendUrl}api/v1/admin/list-all-doctors`, 
+        `${backendUrl}api/v1/admin/list-all-doctors`,
         {},
         {
           headers: {
-            Authorization: `Bearer ${adminToken}`, 
+            Authorization: `Bearer ${adminToken}`,
           },
         }
       );
-  
 
-
-      
       if (data.success) {
         setDoctors(data.doctors);
         console.log(data.doctors);
@@ -44,7 +41,29 @@ const AdminContextProvider = (props) => {
     }
   };
 
-
+  //function to change  availability of doctors
+  const changeAvailability = async (doctorId) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}api/v1/admin/change-availability`,
+        { doctorId },
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+      if (data.success) {
+        toast.success(data.message);
+        //call the list all doctors to update the data
+        adminListAllDoctors();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // The `value` object will made avialable for all childe components through context.
   const value = {
@@ -52,7 +71,7 @@ const AdminContextProvider = (props) => {
     setAdminToken,
     doctors,
     adminListAllDoctors,
-  
+    changeAvailability
   };
 
   // This makes the `value` available to all child components wrapped by provider.
