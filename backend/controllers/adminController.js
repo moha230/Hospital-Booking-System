@@ -91,7 +91,7 @@ const adminRegisterDoctor = async (req, res) => {
 }
 
 
-// function controler to list all doctors 
+// function controller to list all doctors 
 
 const adminListDoctors = async (req, res) => {
   try {

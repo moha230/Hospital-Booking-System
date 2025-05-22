@@ -8,7 +8,7 @@ const DoctorsList = () => {
     if (adminToken) {
       adminListAllDoctors();
     }
-  }, [adminToken]);
+  });
 
   return (
     <div className="m-5 max-h-[90vh] overflow-y-scroll">
@@ -20,7 +20,7 @@ const DoctorsList = () => {
             key={item._id}
             className="bg-white rounded-2xl shadow-md overflow-hidden border border-[#C9D8FF] transition-transform hover:-translate-y-2 duration-300"
           >
-            <div className="w-full h-66 bg-[#EAEFFF]">
+            <div className="w-full h-70 bg-[#EAEFFF]">
               <img
                 src={item.image}
                 alt={item.name}
