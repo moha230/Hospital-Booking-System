@@ -12,7 +12,7 @@ const loginAdmin = async (req, res) => {
     const { email, password } = req.body
 
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' })
+      const token = jwt.sign({ email }, process.env.JWT_SECRET)
       res.json({ success: true, token })
     } else {
       res.json({ success: false, message: "Invalid credentials" })
@@ -95,8 +95,8 @@ const adminRegisterDoctor = async (req, res) => {
 
 const adminListDoctors = async (req, res) => {
   try {
-    const doctors = await doctorModel.find({}, '-password')
-    res.status(200).json({ success: true, date: doctors });
+    const doctors = await doctorModel.find({}).select('-password')
+    res.status(200).json({ success: true,doctors });
 
   } catch (error) {
     console.log('Error listing doctors', error)

@@ -13,8 +13,12 @@ adminRouter.post('/login', loginAdmin);
 // Route to add a new doctor
 adminRouter.post('/doctor-registration',authAdmin, upload.single('image'), adminRegisterDoctor);
 
-// route to login for admin
+// route to list all doctors for admin
 adminRouter.post('/list-all-doctors',authAdmin, adminListDoctors);
+
+
+
+
 
 
 

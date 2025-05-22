@@ -22,7 +22,9 @@ const DoctorRegistration = () => {
 
   //get backend url and admin token
 
-  const { adminToken,backendUrl } = useContext(AdminContext);
+  const { adminToken } = useContext(AdminContext);
+  // Get the backend URL from the environment variables
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   //function
   const onSubmitHandler = async (event) => {

@@ -5,26 +5,25 @@ import jwt from 'jsonwebtoken';
 
 const authAdmin = async (req, res, next) => {
   // get authorization token
-  const authorization = req.headers.authorization
+  const authorization = req.headers.authorization;
   //If no token is provided, return an error message
   if (!authorization || !authorization.startsWith('Bearer')) {
-    return res.json({ success: false, message: 'User token missing or invalid!' })
+    res.status(401).json({ error: 'User token missing or invalid!' })
   } else {
-    const AdminToken = authorization.split(' ')[1];
-
+    const adminToken = authorization.split(' ')[1];
     try {
 
-      // verity token
-      const decode_Token = jwt.verify(AdminToken, process.env.JWT_SECRET)
+      // verify token
+      const decode_Token = jwt.verify(adminToken, process.env.JWT_SECRET)
 
-      req.decode_Token= decode_Token;    
+      req.decode_Token = decode_Token;
       //go to next middler ware 
 
       next();
 
     } catch (error) {
       console.log(error);
-      res.json({ success: false, message: error.message })
+      res.json({ error: 'JWT token is unauthorized!' })
     }
 
   }

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "@/context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-//import { assets } from "@/assets/assets";
+
 
 const Login = () => {
   // State to track which type of login is currently active ("Admin" or "Doctor")
@@ -10,7 +10,11 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setAdminToken, backendUrl } = useContext(AdminContext);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const { setAdminToken } = useContext(AdminContext);
+  
+  console.log("Backend URL:", backendUrl);
 
   //function for handlins submition
   const onSubmitHandler = async (event) => {
