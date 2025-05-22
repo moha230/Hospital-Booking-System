@@ -7,7 +7,7 @@ const authAdmin = async (req, res, next) => {
   // get authorization token
   const authorization = req.headers.authorization;
   //If no token is provided, return an error message
-  if (!authorization || !authorization.startsWith('Bearer')) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     res.status(401).json({ error: 'User token missing or invalid!' })
   } else {
     const adminToken = authorization.split(' ')[1];
@@ -21,10 +21,11 @@ const authAdmin = async (req, res, next) => {
 
       next();
 
-    } catch (error) {
+    }  catch (error) {
       console.log(error);
-      res.json({ error: 'JWT token is unauthorized!' })
+      res.status(401).json({ error: 'JWT token is unauthorized!' });
     }
+    
 
   }
 

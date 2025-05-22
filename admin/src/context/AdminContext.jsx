@@ -28,7 +28,7 @@ const AdminContextProvider = (props) => {
           },
         }
       );
-      console.log("adminToken:", adminToken);
+  
 
 
       
