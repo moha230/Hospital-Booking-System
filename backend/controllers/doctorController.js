@@ -14,7 +14,7 @@ const changeAvailability = async (req, res) => {
   }
 };
 
-//controller function to fetch doctors data and present them as list frontend
+//controller function to fetch doctors data and present them in the  frontend
 const doctorList = async (req,res) => {
   try {
     const doctors = await doctorModel.find({}).select(['-password', '-email'])

@@ -48,7 +48,7 @@ const adminRegisterDoctor = async (req, res) => {
     }
 
 
-    // Hash the user password 
+    // Hash the admin password 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt)
 

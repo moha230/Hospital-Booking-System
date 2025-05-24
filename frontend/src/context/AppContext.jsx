@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState } from "react";
-import { doctors } from "../assets";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
-  const currencySymbols = "€"; //
+
+  const currencySymbols = "€"; 
+
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [doctors, setDoctors] = useState([]);
@@ -29,7 +30,7 @@ const AppContextProvider = (props) => {
   // perform side effects using user effect
   useEffect(() => {
     getdoctorsData();
-  }, []);
+  });
 
   const value = {
     doctors,
@@ -45,5 +46,4 @@ const AppContextProvider = (props) => {
 
 export default AppContextProvider;
 
-//import axios
-// get back end url
+
