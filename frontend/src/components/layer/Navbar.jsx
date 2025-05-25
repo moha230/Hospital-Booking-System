@@ -16,7 +16,7 @@ const Navbar = () => {
     
     localStorage.removeItem('userToken')
     setUserToken(false)
-    navigate('/login')
+    navigate('/')
   }
 
   return (
