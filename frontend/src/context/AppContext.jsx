@@ -5,13 +5,14 @@ import { toast } from "react-toastify";
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
-
-  const currencySymbols = "€"; 
+  const currencySymbols = "€";
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [doctors, setDoctors] = useState([]);
+  const [userToken, setUserToken] = useState(() => localStorage.getItem('userToken') || null);
 
+  
   //frontend doctorslist from the backend
   const getdoctorsData = async () => {
     try {
@@ -30,13 +31,14 @@ const AppContextProvider = (props) => {
   // perform side effects using user effect
   useEffect(() => {
     getdoctorsData();
-  });
+  }, []);
 
   const value = {
     doctors,
     currencySymbols,
     getdoctorsData,
     backendUrl,
+    userToken,setUserToken
   };
 
   return (
@@ -45,5 +47,3 @@ const AppContextProvider = (props) => {
 };
 
 export default AppContextProvider;
-
-

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  //Track whether the user is signing up or logging in
-  //Possible values 'Sign up' or 'Login'
   const [state, setState] = useState("Sign Up");
 
   //Stores the users full name input (only used in Sign Up mode)
@@ -14,73 +16,124 @@ const Login = () => {
   //Stores user password input (used in both Login and Sign Up)
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
+  const { backendUrl, userToken, setUserToken } = useContext(AppContext);
+
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+
+    try {
+      if (state === "Sign Up") {
+        const { data } = await axios.post(`${backendUrl}api/v1/user/register`, {
+          name,
+          password,
+          email,
+        });
+        if (data.success) {
+          //save data to local storage
+          localStorage.setItem("userToken", data.userToken);
+          setUserToken(data.userToken);
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const { data } = await axios.post(`${backendUrl}api/v1/user/login`, {
+          password,
+          email,
+        });
+
+        if (data.success) {
+          //save data to local storage
+          localStorage.setItem("userToken", data.userToken);
+          setUserToken(data.userToken);
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
+  useEffect(() => {
+    if (userToken) {
+      navigate("/");
+    }
+  }, [userToken]);
+
   return (
-    <form className="min-h-[100vh] flex items-center justify-center">
-      <div className="flex flex-col gap-4 p-8 w-full max-w-md border rounded-xl text-[#5E5E5E] text-sm shadow-lg bg-white">
-        <h2 className="text-2xl font-semibold">
+    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
+      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
+        <p className="text-2xl font-semibold">
           {state === "Sign Up" ? "Create Account" : "Login"}
-        </h2>
-        <p className="mb-4">
-          Please {state === "Sign Up" ? "sign up" : "log in"} to book an
+        </p>
+        <p>
+          Please {state === "Sign Up" ? "sign up" : "log in"} to book
           appointment
         </p>
-
-        {state === "Sign Up" && (
-          <div className="w-full">
-            <label className="block mb-1 font-medium">Full Name</label>
+        {state === "Sign Up" ? (
+          <div className="w-full ">
+            <p>Full Name</p>
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
-              className="border border-[#DADADA] rounded w-full p-2"
+              className="border border-[#DADADA] rounded w-full p-2 mt-1"
               type="text"
               required
             />
           </div>
-        )}
-
-        <div className="w-full">
-          <label className="block mb-1 font-medium">Email</label>
+        ) : null}
+        <div className="w-full ">
+          <p>Email</p>
           <input
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              console.log("Email:", e.target.value);
+              setEmail(e.target.value);
+            }}
             value={email}
-            className="border border-[#DADADA] rounded w-full p-2"
+            className="border border-[#DADADA] rounded w-full p-2 mt-1"
             type="email"
             required
           />
         </div>
-
-        <div className="w-full">
-          <label className="block mb-1 font-medium">Password</label>
+        <div className="w-full ">
+          <p>Password</p>
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            className="border border-[#DADADA] rounded w-full p-2"
+            className="border border-[#DADADA] rounded w-full p-2 mt-1"
             type="password"
             required
           />
         </div>
-
-        <button
-          type="submit"
-          className="bg-primary hover:bg-opacity-90 transition text-white w-full py-2 mt-4 rounded-md text-base font-medium"
-        >
-          {state === "Sign Up" ? "Create Account" : "Login"}
+        <button className="bg-primary text-white w-full py-2 my-2 rounded-md text-base">
+          {state === "Sign Up" ? "Create account" : "Login"}
         </button>
-        {state === 'Sign Up'
-          ? <p>Already have an account? <span onClick={() => setState('Login')} className='text-primary underline cursor-pointer'>Login here</span></p>
-          : <p>Create an new account? <span onClick={() => setState('Sign Up')} className='text-primary underline cursor-pointer'>Click here</span></p>
-        }
+        {state === "Sign Up" ? (
+          <p>
+            Already have an account?{" "}
+            <span
+              onClick={() => setState("Login")}
+              className="text-primary underline cursor-pointer"
+            >
+              Login here
+            </span>
+          </p>
+        ) : (
+          <p>
+            Create an new account?{" "}
+            <span
+              onClick={() => setState("Sign Up")}
+              className="text-primary underline cursor-pointer"
+            >
+              Click here
+            </span>
+          </p>
+        )}
       </div>
     </form>
   );
 };
 
 export default Login;
-
-
-
-

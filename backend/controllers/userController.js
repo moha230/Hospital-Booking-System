@@ -46,14 +46,14 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body
     const user = await userModel.findOne({ email })
     if (!user) {
-      res.json({ success: false, message: 'User does not exit please try registering' });
+     return res.json({ success: false, message: 'User does not exit please try registering' });
     }
 
     const userMatch = await bcrypt.compare(password, user.password)
 
     if (userMatch) {
       const userToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-      res.json({ success: true, token:userToken })
+      res.json({ success: true, userToken:userToken })
     } else
     {
       res.json({ success: false, message:"Invalid credentials" })
