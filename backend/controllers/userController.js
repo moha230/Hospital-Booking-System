@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { createUser } from "../services/userService.js";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from 'cloudinary'
 
 // Controller function to register a new user
 const userRegistration = async (req, res) => {
@@ -81,5 +82,36 @@ const getUserProfile = async (req, res) => {
 }
 
 
+//controller function update user profile 
 
-export { userRegistration, loginUser,getUserProfile};
+const updateUserProfile =  async(req,res) => {
+  try {
+
+    const { userId, name, phone, address, dob, gender } = req.body
+    const imageFile = req.file
+
+    if (!name || !phone || !dob || !gender) {
+      return res.json({ success: false, message: "Data missing" })
+    }
+
+    await userModel.findByIdAndUpdate(userId, { name, phone, address: JSON.parse(address), dob, gender })
+
+    if (imageFile) {
+
+      // upload  the image to cloudinary data base 
+      const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" })
+      const imageURL = imageUpload.secure_url
+
+      await userModel.findByIdAndUpdate(userId, { image: imageURL })
+    }
+
+    res.json({ success: true, message: 'User profile updated' })
+
+  } catch (error) {
+    console.log(error)
+    res.json({ success: true, message: error.message })
+  }
+}
+
+
+export { userRegistration, loginUser, getUserProfile,updateUserProfile };
