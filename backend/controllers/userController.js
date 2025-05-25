@@ -46,24 +46,40 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body
     const user = await userModel.findOne({ email })
     if (!user) {
-     return res.json({ success: false, message: 'User does not exit please try registering' });
+      return res.json({ success: false, message: 'User does not exit please try registering' });
     }
 
     const userMatch = await bcrypt.compare(password, user.password)
 
     if (userMatch) {
       const userToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-      res.json({ success: true, userToken:userToken })
-    } else
-    {
-      res.json({ success: false, message:"Invalid credentials" })
+      res.json({ success: true, userToken: userToken })
+    } else {
+      res.json({ success: false, message: "Invalid credentials" })
     }
-  
+
 
   } catch (error) {
-  console.error(error);
-  res.status(500).json({ success: false, message: error.message });
-}
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
 }
 
-export { userRegistration , loginUser};
+
+// controller function to fetch user  profile infromation 
+
+const getUserProfile = async (req, res) => {
+  try {
+    const { userId } = req.body
+    const userData = await userModel.findById(userId).select('-password')
+    res.json({ success: true, userData })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+
+  }
+}
+
+
+
+export { userRegistration, loginUser,getUserProfile};
