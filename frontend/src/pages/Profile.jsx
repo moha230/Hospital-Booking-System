@@ -1,172 +1,246 @@
-import React, { useState } from "react";
-import { assets } from "../assets";
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 const Profile = () => {
-  //state to hold user data will be connected to the backend in the future
-  const [userData, setUserData] = useState({
-    name: "Juma Jana",
-    image: assets.profile_pic,
-    email: "jumaJuna.gmail.com",
-    phone: "+3589464855",
-    address: {
-      street: "Pohjoisesplanadi 21",
-      city: "Helsinki,",
-      country: "Suomi",
-    },
-    gender: "Male",
-    dob: "1986-01-20",
-  });
+  const [isEdit, setIsEdit] = useState(false);
+  const [image, setImage] = useState(false);
 
-  //state variable to toggle between view and edit mode
-  const [isEdit, setIsEdit] = useState(true);
+  const {
+    userToken,
+    backendUrl,
+    userData,
+    setUserData,
+    getUserProfileData,
+  } = useContext(AppContext);
+
+  const updateUserProfileData = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("name", userData.name);
+      formData.append("phone", userData.phone);
+      formData.append("address", JSON.stringify(userData.address));
+      formData.append("gender", userData.gender);
+      formData.append("dob", userData.dob);
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      const { data } = await axios.post(
+        `${backendUrl}api/v1/user/update-profile`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        await getUserProfileData();
+        setIsEdit(false);
+        setImage(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error.message);
+    }
+  };
+
+  if (!userData) return null;
+
+  const { name, email, phone, address = {}, gender, dob, image: profileImg } = userData;
 
   return (
-    // container for profile
-    <div className="max-w-lg flex flex-col gap-2 text-sm pt-5">
-      {/* Display the user's profile image */}
-      <img className="w-56 rounded opacity-75" src={userData.image} />
-      {/* Conditionally render name as input (edit mode) or text (view mode) */}
-      {isEdit ? (
-        <input
-          className="bg-gray-50 text-3xl font-medium max-w-60"
-          type="text"
-          onChange={(e) =>
-            setUserData((prev) => ({ ...prev, name: e.target.value }))
-          }
-          value={userData.name}
-        />
-      ) : (
-        // show name as plain text if not in edit mode
-        <p className="font-medium text-3xl text-[#262626] mt-4">
-          {userData.name}
-        </p>
-      )}
-      <hr className="bg-[#ADADAD] h-[1px] border-none" />
-
-      {/* Contact section thinking of making this into different components. At the moment need to make a working page  */}
-      <div>
-        <p className="text-gray-600 underline mt-3">Contact information</p>
-        <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-[#363636]">
-          {/* Email section (static display, not editable even in edit mode) may change in future */}
-          <p className="font-medium">Email</p>
-          <p className="text-green-500">{userData.email}</p>
-          {/* Phone number section */}
-          <p className="font-medium">Phone number</p>
-          {isEdit ? (
-            // Input field to edit phone number when in edit mode
+    <div className="max-w-xl mx-auto bg-white shadow p-6 rounded-lg text-sm space-y-6 mt-10">
+      {/* Profile Header */}
+      <div className="flex items-center gap-6">
+        {isEdit ? (
+          <label htmlFor="image" className="cursor-pointer relative">
+            <img
+              className="w-28 h-28 rounded-full object-cover border-2 border-gray-300"
+              src={image ? URL.createObjectURL(image) : profileImg}
+              alt="Profile"
+            />
             <input
-              className="bg-gray-50 max-w-52"
-              type="tel"
+              type="file"
+              id="image"
+              hidden
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+            <div className="absolute bottom-0 right-0 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+              Change
+            </div>
+          </label>
+        ) : (
+          <img
+            className="w-28 h-28 rounded-full object-cover border-2 border-gray-300"
+            src={profileImg}
+            alt="Profile"
+          />
+        )}
+
+        <div>
+          {isEdit ? (
+            <input
+              className="text-2xl font-semibold bg-gray-100 p-2 rounded w-full"
+              type="text"
+              value={name}
               onChange={(e) =>
-                setUserData((prev) => ({ ...prev, phone: e.target.value }))
+                setUserData({ ...userData, name: e.target.value })
               }
-              value={userData.phone}
             />
           ) : (
-            // Show phone number as text when not in edit mode
-            <p className="text-green-500">{userData.phone}</p>
+            <h2 className="text-2xl font-semibold">{name}</h2>
           )}
-          {/* Address  section maybe moved to component */}
-          <p className="font-medium">Address</p>
-          {isEdit ? (
-            // Input field to edit address  when in edit mode address street  city and country
-            <p>
-              <input
-                className="bg-gray-50"
-                type="text"
-                onChange={(e) =>
-                  setUserData((prev) => ({
-                    ...prev,
-                    address: { ...prev.address, street: e.target.value },
-                  }))
-                }
-                value={userData.address.street}
-              />
-              <br />
-              <input
-                onChange={(e) =>
-                  setUserData((prev) => ({
-                    ...prev,
-                    address: { ...prev.address, city: e.target.value },
-                  }))
-                }
-                value={userData.address.city}
-                type="text"
-              />
-              <br />
-              <input
-                onChange={(e) =>
-                  setUserData((prev) => ({
-                    ...prev,
-                    address: { ...prev.address, country: e.target.value },
-                  }))
-                }
-                value={userData.address.country}
-                type="text"
-              />
-            </p>
-          ) : (
-            <p>
-              {userData.address.street}
-              <br />
-              {userData.address.city}
-            </p>
-          )}
+          <p className="text-gray-500">{email}</p>
         </div>
       </div>
-      <div>
-        {/* basic information section. maybe turn it to component?  */}
-        <p className="text-[#797979] underline mt-3">Basic information</p>
-        <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-gray-600">
-          <p className="font-medium">Gender</p>
-          {isEdit ? (
-            <select
-              className="max-w-20 bg-gray-50"
-              onChange={(e) =>
-                setUserData((prev) => ({ ...prev, gender: e.target.value }))
-              }
-              value={userData.gender}
-            >
-              <option value="Blanck">Select gender</option>
-              <option value="male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Others">Others</option>
-            </select>
-          ) : (
-            <p className="text-gray-500">{userData.gender}</p>
-          )}
-          <p className="font-medium">Date of birth</p>
+
+      {/* Contact Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium text-gray-700">Contact Information</h3>
+
+        <div>
+          <label className="block text-gray-600 text-sm mb-1">Phone</label>
           {isEdit ? (
             <input
-              className="max-w-28 bg-gray-50"
-              type="date"
+              className="bg-gray-50 border p-2 w-full rounded"
+              type="tel"
+              value={phone}
               onChange={(e) =>
-                setUserData((prev) => ({ ...prev, dob: e.target.value }))
+                setUserData({ ...userData, phone: e.target.value })
               }
-              value={userData.dob}
             />
           ) : (
-            <p className="text-gray-500">{userData.dob}</p>
+            <p>{phone}</p>
           )}
         </div>
-        {/*edit button section */}
-        <div className="mt-20">
+
+        <div>
+          <label className="block text-gray-600 text-sm mb-1">Street</label>
           {isEdit ? (
-            <button
-              className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
-              onClick={() => setIsEdit(false)}
-            >
-              Save information
-            </button>
+            <input
+              className="bg-gray-50 border p-2 w-full rounded"
+              type="text"
+              value={address.street || ""}
+              onChange={(e) =>
+                setUserData({
+                  ...userData,
+                  address: { ...address, street: e.target.value },
+                })
+              }
+            />
           ) : (
-            <button
-              className="border border-primary px-8 py-2 rounded-full hover:bg-primary hover:text-white transition-all"
-              onClick={() => setIsEdit(true)}
-            >
-              Edit information
-            </button>
+            <p>{address.street}</p>
           )}
         </div>
+
+        <div className="flex gap-4">
+          <div className="w-1/2">
+            <label className="block text-gray-600 text-sm mb-1">City</label>
+            {isEdit ? (
+              <input
+                className="bg-gray-50 border p-2 w-full rounded"
+                type="text"
+                value={address.city || ""}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    address: { ...address, city: e.target.value },
+                  })
+                }
+              />
+            ) : (
+              <p>{address.city}</p>
+            )}
+          </div>
+          <div className="w-1/2">
+            <label className="block text-gray-600 text-sm mb-1">Country</label>
+            {isEdit ? (
+              <input
+                className="bg-gray-50 border p-2 w-full rounded"
+                type="text"
+                value={address.country || ""}
+                onChange={(e) =>
+                  setUserData({
+                    ...userData,
+                    address: { ...address, country: e.target.value },
+                  })
+                }
+              />
+            ) : (
+              <p>{address.country}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Basic Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium text-gray-700">Basic Information</h3>
+
+        <div className="flex gap-4">
+          <div className="w-1/2">
+            <label className="block text-gray-600 text-sm mb-1">Gender</label>
+            {isEdit ? (
+              <select
+                className="bg-gray-50 border p-2 w-full rounded"
+                value={gender}
+                onChange={(e) =>
+                  setUserData({ ...userData, gender: e.target.value })
+                }
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+            ) : (
+              <p>{gender}</p>
+            )}
+          </div>
+
+          <div className="w-1/2">
+            <label className="block text-gray-600 text-sm mb-1">Date of Birth</label>
+            {isEdit ? (
+              <input
+                className="bg-gray-50 border p-2 w-full rounded"
+                type="date"
+                value={dob?.split("T")[0] || ""}
+                onChange={(e) =>
+                  setUserData({ ...userData, dob: e.target.value })
+                }
+              />
+            ) : (
+              <p>{dob?.split("T")[0]}</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="text-center pt-6">
+        {isEdit ? (
+          <button
+            className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+            onClick={updateUserProfileData}
+          >
+            Save Changes
+          </button>
+        ) : (
+          <button
+            className="border border-blue-600 text-blue-600 px-6 py-2 rounded-full hover:bg-blue-600 hover:text-white transition"
+            onClick={() => setIsEdit(true)}
+          >
+            Edit Profile
+          </button>
+        )}
       </div>
     </div>
   );

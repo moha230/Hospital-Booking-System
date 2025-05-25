@@ -10,9 +10,11 @@ const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [doctors, setDoctors] = useState([]);
-  const [userToken, setUserToken] = useState(() => localStorage.getItem('userToken') || null);
+  const [userToken, setUserToken] = useState(
+    localStorage.getItem("userToken") ? localStorage.getItem("userToken") : ""
+  );
+  const [userData, setUserData] = useState(false);
 
-  
   //frontend doctorslist from the backend
   const getdoctorsData = async () => {
     try {
@@ -28,17 +30,47 @@ const AppContextProvider = (props) => {
     }
   };
 
+  //get user profile data from the database
+
+  const getUserProfileData = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}api/v1/user/get-profile`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        }
+      });
+
+      if (data.success) {
+        setUserData(data.userData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    }
+  };
+
   // perform side effects using user effect
   useEffect(() => {
     getdoctorsData();
   }, []);
+
+  useEffect(() => {
+    if (userToken) {
+      getUserProfileData();
+    }
+  }, [userToken]);
 
   const value = {
     doctors,
     currencySymbols,
     getdoctorsData,
     backendUrl,
-    userToken,setUserToken
+    userToken,
+    setUserToken,
+    userData,
+    setUserData,
+    getUserProfileData,
   };
 
   return (
