@@ -16,7 +16,9 @@ const authUser = async (req, res, next) => {
       // verify token
       const decode_Token = jwt.verify(userToken, process.env.JWT_SECRET)
 
-      req.body.userId = decode_Token.id;
+      req.user = decode_Token; 
+      console.log("Decoded token:", decode_Token);
+
 
 
       //go to next middler ware 

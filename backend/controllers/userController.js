@@ -71,7 +71,8 @@ const loginUser = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    const { userId } = req.body
+    const userId = req.user.id;
+
     const userData = await userModel.findById(userId).select('-password')
     res.json({ success: true, userData })
   } catch (error) {
@@ -87,7 +88,9 @@ const getUserProfile = async (req, res) => {
 const updateUserProfile =  async(req,res) => {
   try {
 
-    const { userId, name, phone, address, dob, gender } = req.body
+    const userId = req.user.id;
+
+    const { name, phone, address, dob, gender } = req.body
     const imageFile = req.file
 
     if (!name || !phone || !dob || !gender) {
