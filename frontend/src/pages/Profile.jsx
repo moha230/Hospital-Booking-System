@@ -58,7 +58,7 @@ const Profile = () => {
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow p-6 rounded-lg text-sm space-y-6 mt-10">
-      {/* Profile Header */}
+      {/* Profile header */}
       <div className="flex items-center gap-6">
         {isEdit ? (
           <label htmlFor="image" className="cursor-pointer relative">
@@ -73,7 +73,7 @@ const Profile = () => {
               hidden
               onChange={(e) => setImage(e.target.files[0])}
             />
-            <div className="absolute bottom-0 right-0 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+            <div className="absolute bottom-0 right-0 bg-green-600 text-white text-xs px-2 py-1 rounded-full">
               Change
             </div>
           </label>
@@ -102,7 +102,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Contact Information */}
+      {/* Contact information */}
       <div className="space-y-4">
         <h3 className="text-lg font-medium text-gray-700">Contact Information</h3>
 
@@ -224,18 +224,18 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Action Buttons */}
+      {/* Action buttons */}
       <div className="text-center pt-6">
         {isEdit ? (
           <button
-            className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+            className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition"
             onClick={updateUserProfileData}
           >
             Save Changes
           </button>
         ) : (
           <button
-            className="border border-blue-600 text-blue-600 px-6 py-2 rounded-full hover:bg-blue-600 hover:text-white transition"
+            className="border border-green-600 text-green-600 px-6 py-2 rounded-full hover:bg-red-600 hover:text-white transition"
             onClick={() => setIsEdit(true)}
           >
             Edit Profile

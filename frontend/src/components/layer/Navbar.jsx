@@ -7,17 +7,16 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   //state variables
-  
+
+  const { userToken, setUserToken,userData } = useContext(AppContext);
 
   const [showMenu, setShowMenu] = useState(false);
-  const { userToken, setUserToken } = useContext(AppContext);
 
   const logout = () => {
-    
-    localStorage.removeItem('userToken')
-    setUserToken(false)
-    navigate('/')
-  }
+    localStorage.removeItem("userToken");
+    setUserToken(false);
+    navigate("/");
+  };
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD]">
@@ -44,11 +43,19 @@ const Navbar = () => {
           <li className="py-1">About</li>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
+        <a
+          href="http://localhost:5172/api/v1/admin/login"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <li className="py-1">Admin</li>
+          <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
+        </a>
       </ul>
       <div className="flex-item.center gap-4">
-        {userToken ? (
+        {userToken && userData ? (
           <div className="flex items-center gap-2 cursor-pointer group relative ">
-            <img className="w-8 rounded-full" src={assets.profile_pic} />
+            <img className="w-8 rounded-full" src={userData.image} />
             <img className="w-2.5" src={assets.dropdown_icon} />
             <div className="absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block">
               <div className="className='min-w-48 bg-gray-50 rounded flex flex-col gap-4 p-4">
@@ -82,7 +89,12 @@ const Navbar = () => {
           </button>
         )}
       </div>
-      <img onClick={() => setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
+      <img
+        onClick={() => setShowMenu(true)}
+        className="w-6 md:hidden"
+        src={assets.menu_icon}
+        alt=""
+      />
     </div>
   );
 };
