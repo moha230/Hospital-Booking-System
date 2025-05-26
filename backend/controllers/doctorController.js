@@ -6,16 +6,29 @@ const changeAvailability = async (req, res) => {
   try {
     const { doctorId } = req.body;
     const doctor = await doctorModel.findById(doctorId);
-    await doctorModel.findByIdAndUpdate(doctorId, { available: !doctor.available });
-    res.json({ success: true, message: 'Availability Changed' });
+    
+    if (!doctor) {
+      return res.status(404).json({ success: false, message: "Doctor not found" });
+    }
+
+    const updatedDoctor = await doctorModel.findByIdAndUpdate(
+      doctorId,
+      { available: !doctor.available },
+      { new: true } 
+    );
+    res.json({
+      success: true,
+      message: `Availability changed to ${updatedDoctor.available ? 'Available' : 'Unavailable'}`,
+      doctor: updatedDoctor
+    });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
 //controller function to fetch doctors data and present them in the  frontend
-const doctorList = async (req,res) => {
+const doctorList = async (req, res) => {
   try {
     const doctors = await doctorModel.find({}).select(['-password', '-email'])
     res.json({ success: true, doctors })
@@ -26,4 +39,4 @@ const doctorList = async (req,res) => {
 }
 
 
-export { changeAvailability,doctorList }
+export { changeAvailability, doctorList }
