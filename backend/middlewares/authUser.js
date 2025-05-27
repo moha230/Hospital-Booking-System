@@ -16,20 +16,17 @@ const authUser = async (req, res, next) => {
       // verify token
       const decode_Token = jwt.verify(userToken, process.env.JWT_SECRET)
 
-      req.user = decode_Token; 
-      console.log("Decoded token:", decode_Token);
-
-
+      req.user = decode_Token;
 
       //go to next middler ware 
 
       next();
 
-    }  catch (error) {
+    } catch (error) {
       console.log(error);
       res.status(401).json({ error: 'JWT token is unauthorized!' });
     }
-    
+
 
   }
 

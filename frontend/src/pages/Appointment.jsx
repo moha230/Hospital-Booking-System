@@ -6,6 +6,7 @@ import BookingSlotPicker from "../components/appointment/BookingSlotPicker.jsx";
 import RelatedDoctors from "../components/appointment/RelatedDoctors.jsx";
 
 const Appointment = () => {
+  
   const { docId } = useParams();
   const { doctors } = useContext(AppContext);
 

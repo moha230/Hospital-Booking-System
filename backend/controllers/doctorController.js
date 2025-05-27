@@ -6,7 +6,7 @@ const changeAvailability = async (req, res) => {
   try {
     const { doctorId } = req.body;
     const doctor = await doctorModel.findById(doctorId);
-    
+
     if (!doctor) {
       return res.status(404).json({ success: false, message: "Doctor not found" });
     }
@@ -37,6 +37,8 @@ const doctorList = async (req, res) => {
     res.json({ success: false, message: error.message })
   }
 }
+
+
 
 
 export { changeAvailability, doctorList }
