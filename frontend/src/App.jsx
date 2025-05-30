@@ -6,7 +6,7 @@ import Contact from "./pages/Contact.jsx";
 import Doctors from "./pages/Doctors.jsx";
 import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
-import UserAppointment from "./pages/UserAppointment.jsx";
+import UserAppointments from "./pages/UserAppointments.jsx";
 import Appointment from "./pages/Appointment.jsx";
 import Navbar from "./components/layer/Navbar.jsx";
 import Footer from "./components/layer/Footer.jsx";
@@ -25,7 +25,7 @@ const App = () => {
         <Route path="/doctors/:speciality" element={<Doctors />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/userAppointment" element={<UserAppointment />} />
+        <Route path="/userAppointments" element={<UserAppointments />} />
         <Route path="/appointment/:docId" element={<Appointment />} />
       </Routes>
       <Footer />

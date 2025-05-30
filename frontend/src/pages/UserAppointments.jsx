@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext.jsx";
 
-const UserAppointment = () => {
+const UserAppointments = () => {
   const { doctors } = useContext(AppContext);
 
   return (
@@ -54,4 +54,4 @@ const UserAppointment = () => {
   );
 };
 
-export default UserAppointment;
+export default UserAppointments;

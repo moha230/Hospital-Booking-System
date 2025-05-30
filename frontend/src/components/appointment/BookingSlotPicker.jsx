@@ -109,7 +109,7 @@ const BookingSlotPicker = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
-        navigate("/my-appointments");
+        navigate("/UserAppointment");
       } else {
         toast.error(data.message);
       }
