@@ -4,9 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+
 const BookingSlotPicker = () => {
   const { docId } = useParams();
-  const { doctors, token, backendUrl, getDoctosData } = useContext(AppContext);
+  const { userData, doctors, userToken, backendUrl, getDoctorsData } =
+    useContext(AppContext);
 
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
@@ -47,7 +49,9 @@ const BookingSlotPicker = () => {
         currentDate.setHours(10, 0, 0, 0);
       }
 
-      const slotDate = `${currentDate.getDate()}_${currentDate.getMonth() + 1}_${currentDate.getFullYear()}`;
+      const slotDate = `${currentDate.getDate()}_${
+        currentDate.getMonth() + 1
+      }_${currentDate.getFullYear()}`;
       const booked = docInfo.slots_booked?.[slotDate] || [];
 
       const daySlots = [];
@@ -75,28 +79,36 @@ const BookingSlotPicker = () => {
   };
 
   const bookAppointment = async () => {
-    if (!token) {
+    if (!userToken) {
       toast.warning("Login to book appointment");
       return navigate("/login");
     }
+    if(!userData || !userData._id) {
+      toast.error("User data missing.Please log in again");
+      return navigate("/login");
+    }
+
+    const userId = userData._id;
 
     const selectedDate = docSlots[slotIndex][0]?.datetime;
     if (!selectedDate || !slotTime) {
       return toast.error("Please select a date and time slot");
     }
 
-    const slotDate = `${selectedDate.getDate()}_${selectedDate.getMonth() + 1}_${selectedDate.getFullYear()}`;
+    const slotDate = `${selectedDate.getDate()}_${
+      selectedDate.getMonth() + 1
+    }_${selectedDate.getFullYear()}`;
 
     try {
       const { data } = await axios.post(
-        `${backendUrl}/api/user/book-appointment`,
-        { docId, slotDate, slotTime },
-        { headers: { token } }
+        `${backendUrl}api/v1/user/book-appointment`,
+        { userId, docId, slotDate, slotTime },
+        { headers: { Authorization:`Bearer ${userToken}` } }
       );
 
       if (data.success) {
         toast.success(data.message);
-        getDoctosData();
+        getDoctorsData();
         navigate("/my-appointments");
       } else {
         toast.error(data.message);

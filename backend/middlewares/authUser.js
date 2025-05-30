@@ -13,13 +13,11 @@ const authUser = async (req, res, next) => {
     const userToken = authorization.split(' ')[1];
     try {
 
-      // verify token
+      // verify usertoken
       const decode_Token = jwt.verify(userToken, process.env.JWT_SECRET)
 
       req.user = decode_Token;
-
       //go to next middler ware 
-
       next();
 
     } catch (error) {

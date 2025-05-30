@@ -19,6 +19,6 @@ userRouter.get('/get-profile', authUser, getUserProfile)
 //route to update userProfile 
 userRouter.post('/update-profile', upload.single('image'), authUser, updateUserProfile)
 
-
+//route to book appointment 
 userRouter.post('/book-appointment',authUser,bookAppointment)
 export default userRouter

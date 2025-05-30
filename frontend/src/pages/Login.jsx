@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [state, setState] = useState("Sign Up");
+
+  const [state, setState] = useState("Login");
 
   //Stores the users full name input (only used in Sign Up mode)
   const [name, setName] = useState("");

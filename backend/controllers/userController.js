@@ -130,6 +130,7 @@ const bookAppointment = async (req, res) => {
     }
 
     const doctor = await doctorModel.findById(docId).select("-password");
+
     if (!doctor) {
       return res.status(404).json({ success: false, message: 'Doctor not found' });
     }
@@ -140,6 +141,7 @@ const bookAppointment = async (req, res) => {
 
     // Check slot availability
     const slotsBooked = doctor.slots_booked || {};
+
     if (!slotsBooked[slotDate]) {
       slotsBooked[slotDate] = [];
     }
@@ -152,6 +154,7 @@ const bookAppointment = async (req, res) => {
     slotsBooked[slotDate].push(slotTime);
 
     const user = await userModel.findById(userId).select("-password");
+    
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
