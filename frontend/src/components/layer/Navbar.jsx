@@ -45,7 +45,7 @@ const Navbar = () => {
         </NavLink>
         <li className="py-1">
           <a
-            href="http://localhost:5172/"
+            href="http://localhost:5172/api/v1/admin"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline"
