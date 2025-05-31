@@ -26,6 +26,17 @@ const Login = () => {
     event.preventDefault();
 
     try {
+
+
+      const isStrongPassword = (pwd) => pwd.length >= 16;
+
+      if (!isStrongPassword(password)) {
+        toast.error("Please enter a strong password (at least 16 characters)");
+        return;
+      }
+      
+
+
       if (state === "Sign Up") {
         const { data } = await axios.post(`${backendUrl}api/v1/user/register`, {
           name,

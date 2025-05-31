@@ -19,7 +19,7 @@ const Header = () => {
           </p>
         </div>
         <div
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/doctors")}
           className="cursor-pointer flex items-center gap-2 bg-white px-8 py-3 rounded-full text-[#595959] text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300"
         >
           Book appointment
