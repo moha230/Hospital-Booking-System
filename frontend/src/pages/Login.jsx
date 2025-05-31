@@ -4,9 +4,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
 
-  const [state, setState] = useState("Login");
+
+const Login = () => {
+  const [state, setState] = useState("Sign Up");
 
   //Stores the users full name input (only used in Sign Up mode)
   const [name, setName] = useState("");
@@ -59,9 +60,17 @@ const Login = () => {
 
   useEffect(() => {
     if (userToken) {
-      navigate("/");
+      toast.info("You're already logged in.");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     }
   }, [userToken]);
+  
+ 
+
+
+
 
   return (
     <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
@@ -70,7 +79,7 @@ const Login = () => {
           {state === "Sign Up" ? "Create Account" : "Login"}
         </p>
         <p>
-          Please {state === "Sign Up" ? "sign up" : "log in"} to book
+          Please {state === "Sign Up" ? "sign up" : "login"} to book
           appointment
         </p>
         {state === "Sign Up" ? (

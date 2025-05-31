@@ -89,14 +89,14 @@ const BookingSlotPicker = () => {
 
     const userId = userData._id;
 
-    // Format slotDate as date-only (midnight)
+    // Format the slotDate as date-only 
     const slotDate = new Date(
       slotDateTime.getFullYear(),
       slotDateTime.getMonth(),
       slotDateTime.getDate()
     ).toISOString();
 
-    // Use full datetime as slotTime
+    // Use full  datetime as slotTime in order for less confusion
     const slotTime = slotDateTime.toISOString();
 
     try {

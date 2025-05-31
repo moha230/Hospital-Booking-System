@@ -1,7 +1,10 @@
 import React from "react";
 import { assets } from "../../assets/index.js";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col md:flex-row flex-wrap bg-primary rounded-lg px-6 md:px-10 lg:px-20">
       {/* left side container */}
@@ -15,18 +18,16 @@ const Header = () => {
             Let get you patched up <br className="hidden sm:block" /> unix style
           </p>
         </div>
-        <a
-          href="#speciality"
-          className="flex items-center gap-2 bg-white px-8 py-3 rounded-full text-[#595959] text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300"
+        <div
+          onClick={() => navigate("/login")}
+          className="cursor-pointer flex items-center gap-2 bg-white px-8 py-3 rounded-full text-[#595959] text-sm m-auto md:m-0 hover:scale-105 transition-all duration-300"
         >
-          Book appointment{" "}
+          Book appointment
           <img className="w-3" src={assets.arrow_icon} alt="" />
-        </a>
+        </div>
       </div>
       {/* right side container */}
-      <div className="md:w-1/2 relative bg-transparent">
-        
-      </div>
+      <div className="md:w-1/2 relative bg-transparent"></div>
     </div>
   );
 };

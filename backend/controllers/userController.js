@@ -124,69 +124,68 @@ const bookAppointment = async (req, res) => {
   try {
     const { userId, docId, slotDate, slotTime } = req.body;
 
-    // Basic validation
-    if (!userId || !docId || !slotDate || !slotTime) {
-      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    const docData = await doctorModel.findById(docId).select('-password')
+
+
+    //checking availability 
+    if (!docData.available) {
+      return res.json({ success: false, message: 'Doctor Not Available' })
     }
 
-    const doctor = await doctorModel.findById(docId).select("-password");
+    let slots_booked = docData.slots_booked
 
-    if (!doctor) {
-      return res.status(404).json({ success: false, message: 'Doctor not found' });
+    // Check if there are already booked slots for a give date 
+    if (slots_booked[slotDate]) {
+      //If booked return an error response 
+      if (slots_booked[slotDate].includes(slotTime)) {
+        return res.json({ success: false, message: 'Slot Not Available' })
+      }
+      else {
+        //If time slot not booked add to the list of booked slots  
+        slots_booked[slotDate].push(slotTime)
+      }
+    } else {
+      // If there are no booked slots for that date yet, initialize it as an empty array
+      slots_booked[slotDate] = []
+      // Add the requested time slot to the new date entry
+      slots_booked[slotDate].push(slotTime)
     }
 
-    if (!doctor.available) {
-      return res.status(403).json({ success: false, message: 'Doctor not available' });
-    }
+    //Fetch the user document from the database by userId and exclude password from the return data 
 
-    // Check slot availability
-    const slotsBooked = doctor.slots_booked || {};
+    const userData = await userModel.findById(userId).select("-password")
 
-    if (!slotsBooked[slotDate]) {
-      slotsBooked[slotDate] = [];
-    }
+    // Removing the 'slots_booked' field from the doctor data before saving 
+    delete docData.slots_booked
 
-    if (slotsBooked[slotDate].includes(slotTime)) {
-      return res.status(409).json({ success: false, message: 'Slot already booked' });
-    }
-
-    // Update slot booking locally before saving
-    slotsBooked[slotDate].push(slotTime);
-
-    const user = await userModel.findById(userId).select("-password");
-    
-    if (!user) {
-      return res.status(404).json({ success: false, message: 'User not found' });
-    }
-
-    const appointment = new appointmentModel({
+    const appointmentData = {
       userId,
       docId,
-      userData: user,
-      docData: {
-        _id: doctor._id,
-        name: doctor.name,
-        speciality: doctor.speciality,
-        fees: doctor.fees
-      },
-      amount: doctor.fees,
+      userData,
+      docData,
+      amount: docData.fees,
       slotTime,
       slotDate,
-      date: new Date()
-    });
+      date: Date.now()
+    }
 
-    await appointment.save();
+    // Create  new instance of the appointment model using the appointmentData
+    const newAppointment = new appointmentModel(appointmentData)
 
-    // Save updated slots
-    await doctorModel.findByIdAndUpdate(docId, { slots_booked: slotsBooked });
+    // Save the new appointment instance to the MongoDB database
+    await newAppointment.save()
 
-    return res.status(201).json({ success: true, message: 'Appointment booked successfully' });
+    //Save new slots data in docData
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked })
+
+    res.json({ success: true, message: 'Appointment Booked' })
 
   } catch (error) {
     console.error("Appointment Booking Error:", error);
     return res.status(500).json({ success: false, message: 'Internal server error' });
   }
 };
+
 
 
 export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment };

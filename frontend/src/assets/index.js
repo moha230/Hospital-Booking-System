@@ -257,4 +257,73 @@ export const doctors = [
 ];
 
   
+/* 
+export const doctors = [
+  {
+    _id: 'doc1',
+    name: 'Dr. Julien Dubois',
+    email: 'julien.dubois.doc1@clinic.com',
+    // ... rest unchanged
+  },
+  {
+    _id: 'doc2',
+    name: 'Dr. Elias Nieminen',
+    email: 'elias.nieminen.doc2@clinic.com',
+  },
+  {
+    _id: 'doc3',
+    name: 'Dr. Inka Lahti',
+    email: 'inka.lahti.doc3@clinic.com',
+  },
+  {
+    _id: 'doc4',
+    name: 'Dr. Sofia Lindberg',
+    email: 'sofia.lindberg.doc4@clinic.com',
+  },
+  {
+    _id: 'doc5',
+    name: 'Dr. Ella Mäkinen',
+    email: 'ella.makinen.doc5@clinic.com',
+  },
+  {
+    _id: 'doc6',
+    name: 'Dr. Aino Salmi',
+    email: 'aino.salmi.doc6@clinic.com',
+  },
+  {
+    _id: 'doc7',
+    name: 'Dr. Martina Rossi',
+    email: 'martina.rossi.doc7@clinic.com',
+  },
+  {
+    _id: 'doc8',
+    name: 'Dr. Mika Saarinen',
+    email: 'mika.saarinen.doc8@clinic.com',
+  },
+  {
+    _id: 'doc9',
+    name: 'Dr. Leena Korhonen',
+    email: 'leena.korhonen.doc9@clinic.com',
+  },
+  {
+    _id: 'doc10',
+    name: 'Dr. Anna Müller',
+    email: 'anna.muller.doc10@clinic.com',
+  },
+  {
+    _id: 'doc11',
+    name: 'Dr. Pedro Alvarez',
+    email: 'pedro.alvarez.doc11@clinic.com',
+  },
+  {
+    _id: 'doc12',
+    name: 'Dr. Satu Väisänen',
+    email: 'satu.vaisanen.doc12@clinic.com',
+  },
+];
+
+
+
+*/
+
 

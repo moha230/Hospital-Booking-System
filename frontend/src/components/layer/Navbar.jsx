@@ -8,7 +8,7 @@ const Navbar = () => {
 
   //state variables
 
-  const { userToken, setUserToken,userData } = useContext(AppContext);
+  const { userToken, setUserToken, userData } = useContext(AppContext);
 
   const [showMenu, setShowMenu] = useState(false);
 
@@ -43,14 +43,16 @@ const Navbar = () => {
           <li className="py-1">About</li>
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
-        <a
-          href="http://localhost:5172/api/v1/admin/login"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <li className="py-1">Admin</li>
-          <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
-        </a>
+        <li className="py-1">
+          <a
+            href="http://localhost:5172/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Admin
+          </a>
+        </li>
       </ul>
       <div className="flex-item.center gap-4">
         {userToken && userData ? (
@@ -82,7 +84,9 @@ const Navbar = () => {
           </div>
         ) : (
           <button
-            onClick={() => navigate("/login")}
+            onClick={() =>
+              navigate("/login", { state: { fromRegister: true } })
+            }
             className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
           >
             Register Account
