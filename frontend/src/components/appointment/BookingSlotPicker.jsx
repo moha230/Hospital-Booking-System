@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-
 const BookingSlotPicker = () => {
   const { docId } = useParams();
   const { userData, doctors, userToken, backendUrl, getDoctorsData } =
@@ -13,7 +12,7 @@ const BookingSlotPicker = () => {
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
-  const [slotTime, setSlotTime] = useState("");
+  const [slotDateTime, setSlotDateTime] = useState(null);
 
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const navigate = useNavigate();
@@ -83,33 +82,39 @@ const BookingSlotPicker = () => {
       toast.warning("Login to book appointment");
       return navigate("/login");
     }
-    if(!userData || !userData._id) {
-      toast.error("User data missing.Please log in again");
-      return navigate("/login");
+
+    if (!userData || !userData._id || !slotDateTime) {
+      return toast.error("Missing info");
     }
 
     const userId = userData._id;
 
-    const selectedDate = docSlots[slotIndex][0]?.datetime;
-    if (!selectedDate || !slotTime) {
-      return toast.error("Please select a date and time slot");
-    }
+    // Format slotDate as date-only (midnight)
+    const slotDate = new Date(
+      slotDateTime.getFullYear(),
+      slotDateTime.getMonth(),
+      slotDateTime.getDate()
+    ).toISOString();
 
-    const slotDate = `${selectedDate.getDate()}_${
-      selectedDate.getMonth() + 1
-    }_${selectedDate.getFullYear()}`;
+    // Use full datetime as slotTime
+    const slotTime = slotDateTime.toISOString();
 
     try {
       const { data } = await axios.post(
         `${backendUrl}api/v1/user/book-appointment`,
-        { userId, docId, slotDate, slotTime },
-        { headers: { Authorization:`Bearer ${userToken}` } }
+        {
+          userId,
+          docId,
+          slotDate,
+          slotTime,
+        },
+        { headers: { Authorization: `Bearer ${userToken}` } }
       );
 
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
-        navigate("/UserAppointment");
+        navigate("/UserAppointments");
       } else {
         toast.error(data.message);
       }
@@ -130,7 +135,6 @@ const BookingSlotPicker = () => {
                 key={index}
                 className="flex flex-col items-center gap-2 min-w-[96px] flex-shrink-0"
               >
-                {/* Day Header */}
                 <div
                   onClick={() => setSlotIndex(index)}
                   className={`w-full text-center py-3 px-2 rounded-xl font-semibold cursor-pointer transition-all duration-200 ${
@@ -147,16 +151,16 @@ const BookingSlotPicker = () => {
                   </p>
                 </div>
 
-                {/* Time Slots */}
                 {slots.map((slot, i) => (
                   <button
                     key={i}
                     onClick={() => {
                       setSlotIndex(index);
-                      setSlotTime(slot.time);
+                      setSlotDateTime(slot.datetime);
                     }}
                     className={`w-full text-xs py-2 rounded-full transition-all ${
-                      slot.time === slotTime && slotIndex === index
+                      slot.datetime.getTime() === slotDateTime?.getTime() &&
+                      slotIndex === index
                         ? "bg-primary text-white"
                         : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
                     }`}
