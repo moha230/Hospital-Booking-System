@@ -132,6 +132,21 @@ const bookAppointment = async (req, res) => {
       return res.json({ success: false, message: 'Doctor Not Available' })
     }
 
+    const alreadyBooked = await appointmentModel.findOne({
+      docId,
+      slotDate: new Date(slotDate),
+      slotTime: new Date(slotTime),
+      cancelled: false,
+    });
+
+    if (alreadyBooked) {
+      return res.status(409).json({
+        success: false,
+        message: 'Slot already booked, please select another one.',
+      });
+    }
+
+
     let slots_booked = docData.slots_booked
 
     // Check if there are already booked slots for a give date 

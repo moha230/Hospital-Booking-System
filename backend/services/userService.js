@@ -7,7 +7,7 @@ const createUser = async (userData) => {
     const savedUser = await newUser.save();
     const userToken = jwt.sign({ id: savedUser._id }, process.env.JWT_SECRET)
 
-    return { success:true,userToken: userToken };
+    return { success: true, userToken: userToken };
   } catch (error) {
     if (error.code === 11000 && error.keyPattern?.email) {
       return { success: false, message: "User with this email already exists." };

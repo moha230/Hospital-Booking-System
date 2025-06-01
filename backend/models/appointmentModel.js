@@ -13,6 +13,7 @@ const appointmentSchema = new mongoose.Schema({
   payment: { type: Boolean, default: false },
   isCompleted: { type: Boolean, default: false },
 })
+appointmentSchema.index({ docId: 1, slotDate: 1, slotTime: 1 }, { unique: true });
 
 const appointmentModel = mongoose.models.appointment || mongoose.model("appointments", appointmentSchema)
 export default appointmentModel

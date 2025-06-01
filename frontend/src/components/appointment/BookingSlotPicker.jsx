@@ -89,7 +89,7 @@ const BookingSlotPicker = () => {
 
     const userId = userData._id;
 
-    // Format the slotDate as date-only 
+    // Format the slotDate as date-only
     const slotDate = new Date(
       slotDateTime.getFullYear(),
       slotDateTime.getMonth(),
@@ -114,66 +114,68 @@ const BookingSlotPicker = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
-        navigate("/UserAppointments");
+        // navigate("/UserAppointments");
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message || "Something went wrong");
+      if (error.response && error.response.status === 409) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message || "Something went wrong");
+      }
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-6">
-      <p className="font-medium text-gray-700 mb-4 text-lg">Booking slots</p>
+      <p className="font-medium text-gray-700 mb-4 text-lg">Booking Slots</p>
 
-      <div className="overflow-x-auto w-full">
+      {/* Date selector */}
+      <div className="w-full overflow-x-auto ">
         <div className="flex justify-center">
-          <div className="flex gap-4 min-w-max max-w-6xl mx-auto">
+          <div className="flex gap-4 min-w-max max-w-6xl mx-auto pb-2 border-b border-gray-200">
             {docSlots.map((slots, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center gap-2 min-w-[96px] flex-shrink-0"
+                onClick={() => setSlotIndex(index)}
+                className={`text-center min-w-[80px] px-3 py-2 rounded-xl cursor-pointer transition-all ${
+                  slotIndex === index
+                    ? "bg-primary text-white shadow"
+                    : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
+                }`}
               >
-                <div
-                  onClick={() => setSlotIndex(index)}
-                  className={`w-full text-center py-3 px-2 rounded-xl font-semibold cursor-pointer transition-all duration-200 ${
-                    slotIndex === index
-                      ? "bg-primary text-white shadow-md"
-                      : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
-                  }`}
-                >
-                  <p className="uppercase text-sm">
-                    {slots[0] && daysOfWeek[slots[0].datetime.getDay()]}
-                  </p>
-                  <p className="text-xs">
-                    {slots[0] && slots[0].datetime.getDate()}
-                  </p>
-                </div>
-
-                {slots.map((slot, i) => (
-                  <button
-                    key={i}
-                    onClick={() => {
-                      setSlotIndex(index);
-                      setSlotDateTime(slot.datetime);
-                    }}
-                    className={`w-full text-xs py-2 rounded-full transition-all ${
-                      slot.datetime.getTime() === slotDateTime?.getTime() &&
-                      slotIndex === index
-                        ? "bg-primary text-white"
-                        : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
-                    }`}
-                  >
-                    {slot.time.toLowerCase()}
-                  </button>
-                ))}
+                <p className="uppercase text-xs font-semibold">
+                  {slots[0] && daysOfWeek[slots[0].datetime.getDay()]}
+                </p>
+                <p className="text-sm">
+                  {slots[0] && slots[0].datetime.getDate()}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
+      <div className="w-full mt-4 overflow-x-auto">
+        <div className="flex gap-3 min-w-max px-4 py-2">
+          {docSlots[slotIndex]?.map((slot, i) => (
+            <button
+              key={i}
+              onClick={() => setSlotDateTime(slot.datetime)}
+              className={`text-sm px-4 py-2 rounded-full transition-all flex-shrink-0 whitespace-nowrap ${
+                slot.datetime.getTime() === slotDateTime?.getTime()
+                  ? "bg-primary text-white"
+                  : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              {slot.time.toLowerCase()}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Book button */}
       <button
         onClick={bookAppointment}
         className="mt-6 bg-primary text-white text-sm font-light px-6 py-2 rounded-full shadow hover:bg-green-600 transition"

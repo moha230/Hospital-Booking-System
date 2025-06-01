@@ -6,14 +6,12 @@ import { assets } from "../../assets/index.js";
 const DoctorDetails = () => {
   const { docId } = useParams();
   const { doctors, currencySymbols } = useContext(AppContext);
-
   const [docInfo, setDocInfo] = useState(null);
 
-//function to fetch doctors info 
+  // Function to fetch doctor's info
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
-    
   };
 
   useEffect(() => {

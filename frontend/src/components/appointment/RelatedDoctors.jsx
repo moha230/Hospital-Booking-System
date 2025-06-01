@@ -36,7 +36,7 @@ function RelatedDoctors({ speciality, docId }) {
               className="bg-white border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 shadow-sm"
             >
               {/* Doctor image */}
-              <div className="w-full  bg-[#EAEFFF]">
+              <div className="w-full bg-[#EAEFFF]">
                 <img
                   src={item.image}
                   alt={item.name}
