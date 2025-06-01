@@ -12,27 +12,20 @@ const BookingSlotPicker = () => {
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
-  const [slotDateTime, setSlotDateTime] = useState(null);
+  const [slotTime, setSlotTime] = useState("");
 
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const navigate = useNavigate();
 
- 
-  const normalizeSlotTime = (date) => {
-    const newDate = new Date(date);
-    newDate.setSeconds(0);
-    newDate.setMilliseconds(0);
-    return newDate;
-  };
-
-  const fetchDocInfo = async () => {
-    const docInfo = doctors.find((doc) => doc._id === docId);
-    setDocInfo(docInfo);
+  const fetchDocInfo = () => {
+    const foundDoc = doctors.find((doc) => doc._id === docId);
+    setDocInfo(foundDoc);
   };
 
   const getAvailableSlots = () => {
+    if (!docInfo) return;
+
     const today = new Date();
-    const now = new Date();
     const allSlots = [];
 
     for (let i = 0; i < 7; i++) {
@@ -40,11 +33,13 @@ const BookingSlotPicker = () => {
       currentDate.setDate(today.getDate() + i);
 
       const endTime = new Date(currentDate);
-      endTime.setHours(21, 0, 0, 0);
+      endTime.setHours(22, 0, 0, 0);
 
       if (i === 0) {
+        const now = new Date();
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
+
         currentDate.setHours(currentHour);
         currentDate.setMinutes(currentMinute > 30 ? 0 : 30);
         currentDate.setMinutes(currentDate.getMinutes() + 30);
@@ -52,18 +47,22 @@ const BookingSlotPicker = () => {
         currentDate.setHours(10, 0, 0, 0);
       }
 
-      const slotDate = `${currentDate.getDate()}_${currentDate.getMonth() + 1}_${currentDate.getFullYear()}`;
-      const booked = docInfo.slots_booked?.[slotDate] || [];
-
       const daySlots = [];
 
       while (currentDate < endTime) {
-        const normalized = normalizeSlotTime(currentDate);
-        const formattedTime = normalized.toTimeString().slice(0, 5); // "HH:mm"
+        const formattedTime = currentDate.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
 
-        if (!booked.includes(formattedTime)) {
+        const slotDateKey = `${currentDate.getDate()}_${currentDate.getMonth() + 1}_${currentDate.getFullYear()}`;
+
+        const isBooked =
+          docInfo.slots_booked?.[slotDateKey]?.includes(formattedTime);
+
+        if (!isBooked) {
           daySlots.push({
-            datetime: normalized,
+            datetime: new Date(currentDate),
             time: formattedTime,
           });
         }
@@ -83,30 +82,18 @@ const BookingSlotPicker = () => {
       return navigate("/login");
     }
 
-    if (!userData || !userData._id || !slotDateTime) {
-      return toast.error("Missing info");
+    if (!userData || !userData._id || !slotTime || !docSlots[slotIndex]?.[0]) {
+      return toast.error("Missing booking information");
     }
 
-    const userId = userData._id;
-
-    // 🧠 Normalize slotTime before sending
-    const normalizedSlotTime = normalizeSlotTime(slotDateTime);
-
-    // Store full ISO time for accuracy
-    const slotTime = normalizedSlotTime.toISOString();
-
-    // Store just the date part (e.g., 2025-06-01T00:00:00.000Z)
-    const slotDate = new Date(
-      normalizedSlotTime.getFullYear(),
-      normalizedSlotTime.getMonth(),
-      normalizedSlotTime.getDate()
-    ).toISOString();
+    const selectedDate = docSlots[slotIndex][0].datetime;
+    const slotDate = `${selectedDate.getDate()}_${selectedDate.getMonth() + 1}_${selectedDate.getFullYear()}`;
 
     try {
       const { data } = await axios.post(
         `${backendUrl}api/v1/user/book-appointment`,
         {
-          userId,
+          userId: userData._id,
           docId,
           slotDate,
           slotTime,
@@ -117,6 +104,7 @@ const BookingSlotPicker = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
+        setSlotTime(""); // clear slot selection
         setTimeout(() => getAvailableSlots(), 100);
       } else {
         toast.error(data.message);
@@ -131,9 +119,7 @@ const BookingSlotPicker = () => {
   };
 
   useEffect(() => {
-    if (doctors.length > 0) {
-      fetchDocInfo();
-    }
+    if (doctors.length > 0) fetchDocInfo();
   }, [doctors, docId]);
 
   useEffect(() => {
@@ -144,45 +130,57 @@ const BookingSlotPicker = () => {
     <div className="flex flex-col items-center justify-center px-4 py-6">
       <p className="font-medium text-gray-700 mb-4 text-lg">Booking Slots</p>
 
+      {docSlots.length === 0 && (
+        <p className="text-sm text-gray-500">No slots available</p>
+      )}
+
       {/* Date selector */}
-      <div className="w-full overflow-x-auto ">
+      <div className="w-full overflow-x-auto">
         <div className="flex justify-center">
           <div className="flex gap-4 min-w-max max-w-6xl mx-auto pb-2 border-b border-gray-200">
             {docSlots.map((slots, index) => (
               <div
                 key={index}
-                onClick={() => setSlotIndex(index)}
+                onClick={() => {
+                  setSlotIndex(index);
+                  setSlotTime(""); // reset selected time
+                }}
                 className={`text-center min-w-[80px] px-3 py-2 rounded-xl cursor-pointer transition-all ${
                   slotIndex === index
                     ? "bg-primary text-white shadow"
                     : "bg-white border border-gray-300 text-gray-800 hover:bg-gray-100"
                 }`}
               >
-                <p className="uppercase text-xs font-semibold">
-                  {slots[0] && daysOfWeek[slots[0].datetime.getDay()]}
-                </p>
-                <p className="text-sm">
-                  {slots[0] && slots[0].datetime.getDate()}
-                </p>
+                {slots[0] ? (
+                  <>
+                    <p className="uppercase text-xs font-semibold">
+                      {daysOfWeek[slots[0].datetime.getDay()]}
+                    </p>
+                    <p className="text-sm">{slots[0].datetime.getDate()}</p>
+                  </>
+                ) : (
+                  <p className="text-sm text-gray-400">No slots</p>
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
 
+      {/* Time selector */}
       <div className="w-full mt-4 overflow-x-auto">
         <div className="flex gap-3 min-w-max px-4 py-2">
           {docSlots[slotIndex]?.map((slot, i) => (
             <button
               key={i}
-              onClick={() => setSlotDateTime(slot.datetime)}
+              onClick={() => setSlotTime(slot.time)}
               className={`text-sm px-4 py-2 rounded-full transition-all flex-shrink-0 whitespace-nowrap ${
-                slot.datetime.getTime() === slotDateTime?.getTime()
+                slot.time === slotTime
                   ? "bg-primary text-white"
                   : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
               }`}
             >
-              {slot.time}
+              {slot.time.toLowerCase()}
             </button>
           ))}
         </div>
@@ -191,7 +189,12 @@ const BookingSlotPicker = () => {
       {/* Book button */}
       <button
         onClick={bookAppointment}
-        className="mt-6 bg-primary text-white text-sm font-light px-6 py-2 rounded-full shadow hover:bg-green-600 transition"
+        className={`mt-6 px-6 py-2 rounded-full shadow text-white text-sm font-light ${
+          !slotTime
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-primary hover:bg-green-600"
+        }`}
+        disabled={!slotTime}
       >
         Book an appointment
       </button>

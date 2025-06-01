@@ -8,7 +8,7 @@ const authUser = async (req, res, next) => {
   const authorization = req.headers.authorization;
   //If no token is provided, return an error message
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'User token missing or invalid!' })
+    return res.status(401).json({ error: 'User token missing or invalid!' })
   } else {
     const userToken = authorization.split(' ')[1];
     try {
@@ -22,7 +22,7 @@ const authUser = async (req, res, next) => {
 
     } catch (error) {
       console.log(error);
-      res.status(401).json({ error: 'JWT token is unauthorized!' });
+     return res.status(401).json({ error: 'JWT token is unauthorized!' });
     }
 
 

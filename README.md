@@ -1,6 +1,6 @@
 # 🏥 Hospital Booking System
 
-A full-featured Hospital Booking System designed to manage appointments, doctor listings, and hospital operations efficiently. The system supports multiple user roles including **patients**, **hospital directors**, and **super admins**, each with their own functionalities.
+A full-featured Hospital Booking System designed to manage appointments, doctor listings, and hospital operations efficiently. The system supports multiple user roles including **patients**, **hospital doctors**, and **super admins**, each with their own functionalities.
 
 ---
 
@@ -19,7 +19,7 @@ Each doctor has the following properties:
 - Consultation fees
 - Available timings
 - Location
-- **Patient reviews**
+
 
 ---
 
@@ -35,44 +35,13 @@ Patients can:
 
 ---
 
-### 🧾 Receptionist
-Receptionists can:
-- Update their profile
-- Add, update, or remove doctor details
-- View and filter the doctor list
-- Approve or reject appointments
-- View past appointments
-- View detailed doctor information and patient reviews
-- Lock patient accounts (patients must contact hospital to unlock)
-- View statistics with graphs:
-  - Total appointments
-  - Most booked doctors
-  - Patient visit trends
 
----
 
-### 👨‍💼 Hospital Director
-Directors can:
-- Perform all receptionist tasks
-- Add or remove receptionists
-- View financial reports:
-  - Total consultation earnings
-  - Highest-earning doctors
-- Update their profile
-
----
-
-### 🏢 Hospital Administration
-Used in the "About" section of the app:
-- List of hospital directors and receptionists
-- Basic hospital details (location, contact info, services offered)
-
----
 
 ### 🔐 Admin (Super User)
 The system root user with full access:
 - Perform all actions available to all other roles
-- Add or remove hospital directors
+- Add or remove hospital doctors
 - **Reset the entire system (use with caution!)**
 
 ---

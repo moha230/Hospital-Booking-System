@@ -46,36 +46,57 @@ const userRegistration = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body
-    const user = await userModel.findOne({ email })
+    const { email, password } = req.body;
+
+    // Check if user exists
+    const user = await userModel.findOne({ email });
     if (!user) {
-      return res.json({ success: false, message: 'User does not exit please try registering' });
+      return res.status(404).json({ success: false, message: 'User not found. Please register.' });
     }
 
-    const userMatch = await bcrypt.compare(password, user.password)
-
-    if (userMatch) {
-      const userToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-      res.json({ success: true, userToken: userToken })
-    } else {
-      res.json({ success: false, message: "Invalid credentials" })
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Invalid email or password.' });
     }
 
+    // Generate JWT
+    const userToken = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful",
+      userToken,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Login error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
-}
+};
+
 
 
 // controller function to fetch user  profile infromation 
 
 const getUserProfile = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.id
+    console.log("User ID from req.user:", userId);
+
 
     const userData = await userModel.findById(userId).select('-password')
+
+
     res.json({ success: true, userData })
   } catch (error) {
     console.log(error)
@@ -121,61 +142,74 @@ const updateUserProfile = async (req, res) => {
 
 // Controller function for booking appointment
 const bookAppointment = async (req, res) => {
-
   try {
+    const userId = req.user.id;
+    const { docId, slotDate, slotTime } = req.body;
 
-      const { userId, docId, slotDate, slotTime } = req.body
-      const docData = await doctorModel.findById(docId).select("-password")
+    const docDoc = await doctorModel.findById(docId).select("-password");
+    if (!docDoc || !docDoc.available) {
+      return res.status(404).json({ success: false, message: "Doctor not available" });
+    }
 
-      if (!docData.available) {
-          return res.json({ success: false, message: 'Doctor Not Available' })
-      }
+    const slots_booked = docDoc.slots_booked || {};
 
-      let slots_booked = docData.slots_booked
+    // Check slot
+    if (slots_booked[slotDate]?.includes(slotTime)) {
+      return res.json({ success: false, message: "Slot Not Available" });
+    }
 
-      // checking for slot availablity 
-      if (slots_booked[slotDate]) {
-          if (slots_booked[slotDate].includes(slotTime)) {
-              return res.json({ success: false, message: 'Slot Not Available' })
-          }
-          else {
-              slots_booked[slotDate].push(slotTime)
-          }
-      } else {
-          slots_booked[slotDate] = []
-          slots_booked[slotDate].push(slotTime)
-      }
+    // Mark as booked
+    if (!slots_booked[slotDate]) slots_booked[slotDate] = [];
+    slots_booked[slotDate].push(slotTime);
 
-      const userData = await userModel.findById(userId).select("-password")
+    const userDoc = await userModel.findById(userId).select("-password");
+    if (!userDoc) return res.status(404).json({ success: false, message: "User not found" });
 
-      delete docData.slots_booked
+    const appointmentData = {
+      userId,
+      docId,
+      userData: userDoc.toObject(),
+      docData: (() => {
+        const cleanDoc = docDoc.toObject();
+        delete cleanDoc.slots_booked;
+        return cleanDoc;
+      })(),
+      amount: docDoc.fees,
+      slotTime,
+      slotDate,
+      date: Date.now()
+    };
 
-      const appointmentData = {
-          userId,
-          docId,
-          userData,
-          docData,
-          amount: docData.fees,
-          slotTime,
-          slotDate,
-          date: Date.now()
-      }
+    const newAppointment = new appointmentModel(appointmentData);
+    await newAppointment.save();
 
-      const newAppointment = new appointmentModel(appointmentData)
-      await newAppointment.save()
+    // Update doctor slot data
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
 
-      // save new slots data in docData
-      await doctorModel.findByIdAndUpdate(docId, { slots_booked })
-
-      res.json({ success: true, message: 'Appointment Booked' })
+    res.json({ success: true, message: "Appointment Booked" });
 
   } catch (error) {
-      console.log(error)
-      res.json({ success: false, message: error.message })
+    console.error("bookAppointment error:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
+};
 
+
+//controler function to fetch user appointments form the database 
+const listAppointment = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    console.log(userId)
+    const appointments = await appointmentModel.find({ userId })
+
+    res.json({ success: true, appointments })
+  } catch (error) {
+    console.log(error)
+    res.json({ success: false, message: error.message })
+  }
 }
 
 
 
-export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment };
+export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment, listAppointment };
