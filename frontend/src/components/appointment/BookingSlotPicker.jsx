@@ -3,18 +3,16 @@ import { AppContext } from "../../context/AppContext.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 const BookingSlotPicker = () => {
   const { docId } = useParams();
-  const { userData, doctors, userToken, backendUrl, getDoctorsData } =
-    useContext(AppContext);
-
+  const { userData, doctors, userToken, backendUrl, getDoctorsData } = useContext(AppContext);
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
 
-  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const navigate = useNavigate();
 
   const fetchDocInfo = () => {
@@ -39,7 +37,6 @@ const BookingSlotPicker = () => {
         const now = new Date();
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
-
         currentDate.setHours(currentHour);
         currentDate.setMinutes(currentMinute > 30 ? 0 : 30);
         currentDate.setMinutes(currentDate.getMinutes() + 30);
@@ -56,9 +53,7 @@ const BookingSlotPicker = () => {
         });
 
         const slotDateKey = `${currentDate.getDate()}_${currentDate.getMonth() + 1}_${currentDate.getFullYear()}`;
-
-        const isBooked =
-          docInfo.slots_booked?.[slotDateKey]?.includes(formattedTime);
+        const isBooked = docInfo.slots_booked?.[slotDateKey]?.includes(formattedTime);
 
         if (!isBooked) {
           daySlots.push({
@@ -104,14 +99,14 @@ const BookingSlotPicker = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
-        setSlotTime(""); // clear slot selection
+        setSlotTime("");
         setTimeout(() => getAvailableSlots(), 100);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        toast.error(error.response.data.message); // Duplicate slot
+        toast.error(error.response.data.message);
       } else {
         toast.error(error.message || "Something went wrong");
       }
@@ -134,7 +129,6 @@ const BookingSlotPicker = () => {
         <p className="text-sm text-gray-500">No slots available</p>
       )}
 
-      {/* Date selector */}
       <div className="w-full overflow-x-auto">
         <div className="flex justify-center">
           <div className="flex gap-4 min-w-max max-w-6xl mx-auto pb-2 border-b border-gray-200">
@@ -143,7 +137,7 @@ const BookingSlotPicker = () => {
                 key={index}
                 onClick={() => {
                   setSlotIndex(index);
-                  setSlotTime(""); // reset selected time
+                  setSlotTime("");
                 }}
                 className={`text-center min-w-[80px] px-3 py-2 rounded-xl cursor-pointer transition-all ${
                   slotIndex === index
@@ -154,9 +148,11 @@ const BookingSlotPicker = () => {
                 {slots[0] ? (
                   <>
                     <p className="uppercase text-xs font-semibold">
-                      {daysOfWeek[slots[0].datetime.getDay()]}
+                      {moment(slots[0].datetime).format("ddd").toUpperCase()}
                     </p>
-                    <p className="text-sm">{slots[0].datetime.getDate()}</p>
+                    <p className="text-sm">
+                      {moment(slots[0].datetime).format("D MMM")}
+                    </p>
                   </>
                 ) : (
                   <p className="text-sm text-gray-400">No slots</p>
@@ -167,7 +163,6 @@ const BookingSlotPicker = () => {
         </div>
       </div>
 
-      {/* Time selector */}
       <div className="w-full mt-4 overflow-x-auto">
         <div className="flex gap-3 min-w-max px-4 py-2">
           {docSlots[slotIndex]?.map((slot, i) => (
@@ -186,7 +181,6 @@ const BookingSlotPicker = () => {
         </div>
       </div>
 
-      {/* Book button */}
       <button
         onClick={bookAppointment}
         className={`mt-6 px-6 py-2 rounded-full shadow text-white text-sm font-light ${

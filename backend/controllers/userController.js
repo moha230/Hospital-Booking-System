@@ -143,6 +143,7 @@ const updateUserProfile = async (req, res) => {
 // Controller function for booking appointment
 const bookAppointment = async (req, res) => {
   try {
+
     const userId = req.user.id;
     const { docId, slotDate, slotTime } = req.body;
 
@@ -200,16 +201,80 @@ const listAppointment = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    console.log(userId)
-    const appointments = await appointmentModel.find({ userId })
+    const appointments = await appointmentModel.find({ userId });
 
-    res.json({ success: true, appointments })
+    const result = appointments.map(app => ({
+      _id: app._id,
+      userId: app.userId,
+      docId: app.docId,
+      slotDate: app.slotDate,
+      slotTime: app.slotTime,
+      amount: app.amount,
+      payment: app.payment,
+      cancelled: app.cancelled,
+      isCompleted: app.isCompleted,
+      doctor: {
+        name: app.docData?.name,
+        speciality: app.docData?.speciality,
+        image: app.docData?.image,
+        city: app.docData?.address?.city,
+      }
+    }));
+
+    res.json(result);
   } catch (error) {
-    console.log(error)
-    res.json({ success: false, message: error.message })
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 
 
 
-export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment, listAppointment };
+
+//controller to cancel appointment
+const cancelAppointment = async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    const { appointmentId } = req.body;
+
+    console.log("Cancel request:", req.body);
+
+    const appointmentData = await appointmentModel.findById(appointmentId);
+    if (!appointmentData) {
+      return res.status(404).json({ success: false, message: 'Appointment not found' });
+    }
+
+    
+    if (appointmentData.userId.toString() !== userId) {
+      return res.status(403).json({ success: false, message: 'Unauthorized action' });
+    }
+
+   
+    await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+    
+    const { docId, slotDate, slotTime } = appointmentData;
+    const doctorData = await doctorModel.findById(docId);
+
+    if (doctorData?.slots_booked?.[slotDate]) {
+      doctorData.slots_booked[slotDate] = doctorData.slots_booked[slotDate].filter(
+        time => time !== slotTime
+      );
+
+      if (doctorData.slots_booked[slotDate].length === 0) {
+        delete doctorData.slots_booked[slotDate];
+      }
+
+      await doctorModel.findByIdAndUpdate(docId, { slots_booked: doctorData.slots_booked });
+    }
+
+    res.json({ success: true, message: 'Appointment Cancelled' });
+
+  } catch (error) {
+    console.error("cancelAppointment error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment, listAppointment, cancelAppointment };

@@ -6,7 +6,6 @@ import moment from "moment";
 
 const UserAppointments = () => {
   const { backendUrl, userToken } = useContext(AppContext);
-
   const [appointments, setAppointments] = useState([]);
 
   const getUserAppointments = async () => {
@@ -16,9 +15,31 @@ const UserAppointments = () => {
         { headers: { Authorization: `Bearer ${userToken}` } }
       );
 
+      const fetched = Array.isArray(data.appointments)
+        ? data.appointments
+        : data;
+      setAppointments(fetched.reverse());
+      console.log(fetched);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to fetch appointments");
+    }
+  };
+
+  // Function to cancel appointment Using API
+  const cancelAppointment = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}api/v1/user/cancel-appointment`,
+        { appointmentId },
+        { headers: { Authorization: `Bearer ${userToken}` } }
+      );
+
       if (data.success) {
-        setAppointments(data.appointments.reverse());
-        console.log(data.appointments);
+        toast.success(data.message);
+        getUserAppointments();
+      } else {
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
@@ -27,9 +48,7 @@ const UserAppointments = () => {
   };
 
   useEffect(() => {
-    if (userToken) {
-      getUserAppointments();
-    }
+    if (userToken) getUserAppointments();
   }, [userToken]);
 
   return (
@@ -39,24 +58,26 @@ const UserAppointments = () => {
       </p>
       <div className="grid gap-6 mt-6">
         {appointments.map((item, index) => {
-          const doc = item.docData;
+          const doc = item.doctor;
+          let dateTime;
 
-          // Merge date + time with moment
-          let dateTime = "";
-          if (item.slotTime.includes("T")) {
-            dateTime = moment(item.slotTime); // ISO
-          } else {
-            // e.g. slotDate = "1_6_2025", slotTime = "09:00"
-            const [d, m, y] = item.slotDate.split("_");
-            dateTime = moment(
-              `${y}-${m}-${d} ${item.slotTime}`,
-              "YYYY-MM-DD HH:mm"
-            );
+          try {
+            if (item.slotDate.includes("_")) {
+              const [d, m, y] = item.slotDate.split("_");
+              dateTime = moment(
+                `${y}-${m}-${d} ${item.slotTime}`,
+                "YYYY-MM-DD HH:mm"
+              );
+            } else {
+              dateTime = moment(item.slotTime);
+            }
+          } catch {
+            dateTime = moment.invalid();
           }
 
           return (
             <div
-              key={index}
+              key={item._id}
               className="flex flex-col sm:flex-row bg-white shadow-md rounded-xl overflow-hidden border"
             >
               <div className="sm:w-40 flex-shrink-0 bg-[#EAEFFF]">
@@ -72,29 +93,52 @@ const UserAppointments = () => {
                   {doc?.name || "Doctor name unavailable"}
                 </p>
                 <p className="mb-1 capitalize">
-                  {doc?.speciality || "Speciality"}
+                  {doc?.speciality || "Speciality not set"}
                 </p>
 
-                <p className="text-[#464646] font-medium mt-2">Address:</p>
-                <p>{doc?.address?.street || "Street not set"}</p>
-                <p>
-                  {doc?.address?.city || "City"},{" "}
-                  {doc?.address?.country || "Country"}
+                <p className="text-[#464646] font-medium mt-2">
+                  Clinic Location:
                 </p>
+                <p>{doc?.city || "City not set"}</p>
 
                 <p className="mt-2">
                   <span className="text-[#3C3C3C] font-medium">
                     Date & Time:
                   </span>{" "}
-                  {dateTime.format("D.M.YYYY")} time {dateTime.format("HH:mm")}
+                  {dateTime.isValid() ? (
+                    <>
+                      {dateTime.format("DD MMMM YYYY")} ||{" "}
+                      {dateTime.format("HH:mm")}
+                    </>
+                  ) : (
+                    "Invalid date"
+                  )}
                 </p>
+
+                {item.cancelled && (
+                  <p className="mt-2 text-red-500 font-semibold">
+                    Status: Cancelled
+                  </p>
+                )}
               </div>
 
               <div className="p-4 flex flex-col justify-between items-center gap-3 border-t sm:border-l sm:border-t-0">
-                <button className="w-full sm:w-36 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
-                  Pay
+                <button
+                  className="w-full sm:w-36 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+                  disabled={item.payment}
+                >
+                  {item.payment ? "Paid" : "Pay"}
                 </button>
-                <button className="w-full sm:w-36 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition">
+                <button
+                 onClick={() => cancelAppointment(item._id)}
+
+                  className={`w-full sm:w-36 py-2 border rounded-md transition ${
+                    item.cancelled
+                      ? "border-gray-400 text-gray-400 cursor-not-allowed"
+                      : "border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                  }`}
+                  disabled={item.cancelled}
+                >
                   Cancel
                 </button>
               </div>
