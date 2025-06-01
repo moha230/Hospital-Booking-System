@@ -59,7 +59,7 @@ const DoctorDetails = () => {
                 {docInfo.about}
               </p>
             </div>
-
+7
             {/* Fees */}
             <p className="mt-4 text-sm font-medium text-gray-700">
               Starting at:{" "}

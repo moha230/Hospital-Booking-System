@@ -33,7 +33,7 @@ function RelatedDoctors({ speciality, docId }) {
                 navigate(`/appointment/${item._id}`);
                 window.scrollTo(0, 0);
               }}
-              className="bg-white border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 shadow-sm"
+              // className="bg-white border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 shadow-sm"
             >
               {/* Doctor image */}
               <div className="w-full bg-[#EAEFFF]">
@@ -64,3 +64,4 @@ function RelatedDoctors({ speciality, docId }) {
 }
 
 export default RelatedDoctors;
+

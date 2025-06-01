@@ -17,14 +17,18 @@ const BookingSlotPicker = () => {
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const foundDoc = doctors.find((doc) => doc._id === docId);
-    setDocInfo(foundDoc);
-  }, [doctors, docId]);
+ 
+  const normalizeSlotTime = (date) => {
+    const newDate = new Date(date);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+    return newDate;
+  };
 
-  useEffect(() => {
-    if (docInfo) getAvailableSlots();
-  }, [docInfo]);
+  const fetchDocInfo = async () => {
+    const docInfo = doctors.find((doc) => doc._id === docId);
+    setDocInfo(docInfo);
+  };
 
   const getAvailableSlots = () => {
     const today = new Date();
@@ -48,22 +52,18 @@ const BookingSlotPicker = () => {
         currentDate.setHours(10, 0, 0, 0);
       }
 
-      const slotDate = `${currentDate.getDate()}_${
-        currentDate.getMonth() + 1
-      }_${currentDate.getFullYear()}`;
+      const slotDate = `${currentDate.getDate()}_${currentDate.getMonth() + 1}_${currentDate.getFullYear()}`;
       const booked = docInfo.slots_booked?.[slotDate] || [];
 
       const daySlots = [];
 
       while (currentDate < endTime) {
-        const formattedTime = currentDate.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
+        const normalized = normalizeSlotTime(currentDate);
+        const formattedTime = normalized.toTimeString().slice(0, 5); // "HH:mm"
 
         if (!booked.includes(formattedTime)) {
           daySlots.push({
-            datetime: new Date(currentDate),
+            datetime: normalized,
             time: formattedTime,
           });
         }
@@ -89,15 +89,18 @@ const BookingSlotPicker = () => {
 
     const userId = userData._id;
 
-    // Format the slotDate as date-only
-    const slotDate = new Date(
-      slotDateTime.getFullYear(),
-      slotDateTime.getMonth(),
-      slotDateTime.getDate()
-    ).toISOString();
+    // 🧠 Normalize slotTime before sending
+    const normalizedSlotTime = normalizeSlotTime(slotDateTime);
 
-    // Use full  datetime as slotTime in order for less confusion
-    const slotTime = slotDateTime.toISOString();
+    // Store full ISO time for accuracy
+    const slotTime = normalizedSlotTime.toISOString();
+
+    // Store just the date part (e.g., 2025-06-01T00:00:00.000Z)
+    const slotDate = new Date(
+      normalizedSlotTime.getFullYear(),
+      normalizedSlotTime.getMonth(),
+      normalizedSlotTime.getDate()
+    ).toISOString();
 
     try {
       const { data } = await axios.post(
@@ -114,19 +117,28 @@ const BookingSlotPicker = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorsData();
-        // navigate("/UserAppointments");
         setTimeout(() => getAvailableSlots(), 100);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message); // Duplicate slot
       } else {
         toast.error(error.message || "Something went wrong");
       }
     }
   };
+
+  useEffect(() => {
+    if (doctors.length > 0) {
+      fetchDocInfo();
+    }
+  }, [doctors, docId]);
+
+  useEffect(() => {
+    if (docInfo) getAvailableSlots();
+  }, [docInfo]);
 
   return (
     <div className="flex flex-col items-center justify-center px-4 py-6">
@@ -170,7 +182,7 @@ const BookingSlotPicker = () => {
                   : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-100"
               }`}
             >
-              {slot.time.toLowerCase()}
+              {slot.time}
             </button>
           ))}
         </div>
