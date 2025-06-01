@@ -7,12 +7,25 @@ import connectCloudinary from './config/Cloudinary.js';
 import adminRouter from './routes/adminRoute.js';
 import doctorRouter from './routes/doctorRoute.js'; 
 import userRouter from './routes/userRoute.js'; 
+import appointmentModel from "./models/appointmentModel.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // Connect to DB and Cloudinary
 connectDB();
+
+(async () => {
+  try {
+    await appointmentModel.syncIndexes();
+    console.log("Indexes synced for Appointment model");
+  } catch (error) {
+    console.error("Failed to sync indexes:", error);
+  }
+})();
+
+
+
 connectCloudinary();
 
 // Middleware

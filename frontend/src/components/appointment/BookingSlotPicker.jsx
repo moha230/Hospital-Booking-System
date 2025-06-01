@@ -79,7 +79,7 @@ const BookingSlotPicker = () => {
 
   const bookAppointment = async () => {
     if (!userToken) {
-      toast.warning("Login to book appointment");
+      toast.warning("Please login to book appointment");
       return navigate("/login");
     }
 
@@ -115,6 +115,7 @@ const BookingSlotPicker = () => {
         toast.success(data.message);
         getDoctorsData();
         // navigate("/UserAppointments");
+        setTimeout(() => getAvailableSlots(), 100);
       } else {
         toast.error(data.message);
       }
