@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 
 const UserAppointments = () => {
-  const { backendUrl, userToken } = useContext(AppContext);
+  const { backendUrl, userToken, getDoctorsData} = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
 
   const getUserAppointments = async () => {
@@ -41,6 +41,7 @@ const UserAppointments = () => {
       if (data.success) {
         toast.success(data.message);
         getUserAppointments();
+        getDoctorsData()
       } else {
         toast.error(data.message);
       }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { userRegistration, loginUser, getUserProfile, updateUserProfile,bookAppointment, listAppointment, cancelAppointment } from '../controllers/userController.js';
+import { userRegistration, loginUser, getUserProfile, updateUserProfile,bookAppointment, listAppointment, cancelAppointment, createPaymentIntent } from '../controllers/userController.js';
 import authUser from '../middlewares/authUser.js';
 import upload from '../middlewares/multer.js';
 
@@ -28,6 +28,9 @@ userRouter.get('/appointments',authUser,listAppointment)
 
 //cancel  user appointment 
 userRouter.post('/cancel-appointment',authUser,cancelAppointment)
+
+// router.post('/create-payment-intent', authUser, createPaymentIntent);
+
 
 
 

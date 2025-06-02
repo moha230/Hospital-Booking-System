@@ -4,6 +4,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { createDoctor } from "../services/adminService.js";
 import validator from "validator";
 import doctorModel from "../models/doctorModel.js";
+import appointmentModel from "../models/appointmentModel.js";
+
+
+
 //controller function for admin login 
 
 const loginAdmin = async (req, res) => {
@@ -104,8 +108,36 @@ const adminListDoctors = async (req, res) => {
   }
 }
 
+//controller function to list all appointments 
+const adminlistAppointments = async (req, res) => {
+  try {
+
+      const appointments = await appointmentModel.find({})
+      res.json({ success: true, appointments })
+
+  } catch (error) {
+      console.log(error)
+      res.json({ success: false, message: error.message })
+  }
+
+}
+
+
+const adminCancelAppointment = async (req, res) => {
+  try {
+
+      const { appointmentId } = req.body
+      await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+
+      res.json({ success: true, message: 'Appointment Cancelled' })
+
+  } catch (error) {
+      console.log(error)
+      res.json({ success: false, message: error.message })
+  }
+
+}
 
 
 
-
-export { adminRegisterDoctor, loginAdmin, adminListDoctors };
+export { adminRegisterDoctor, loginAdmin, adminListDoctors,adminlistAppointments,adminCancelAppointment };

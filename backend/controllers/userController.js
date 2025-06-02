@@ -7,6 +7,8 @@ import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
 import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from 'cloudinary'
+import Stripe from 'stripe';
+
 
 // Controller function to register a new user
 const userRegistration = async (req, res) => {
@@ -112,7 +114,7 @@ const updateUserProfile = async (req, res) => {
   try {
 
     const userId = req.user.id;
-
+    
     const { name, phone, address, dob, gender } = req.body
     const imageFile = req.file
 
@@ -277,4 +279,25 @@ const cancelAppointment = async (req, res) => {
 };
 
 
-export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment, listAppointment, cancelAppointment };
+const createPaymentIntent = async (req, res) => {
+  try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const { amount, currency } = req.body;
+
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100,
+      currency: currency || 'euro',
+      payment_method_types: ['card'],
+    });
+
+    res.json({ success: true, clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error('Stripe error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
+export { userRegistration, loginUser, getUserProfile, updateUserProfile, bookAppointment, listAppointment, cancelAppointment,createPaymentIntent };

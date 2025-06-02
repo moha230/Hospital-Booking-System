@@ -15,6 +15,7 @@ const AdminContextProvider = (props) => {
   );
 
   const [doctors, setDoctors] = useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   // Function listing  all Doctors data from Database
   const adminListAllDoctors = async () => {
@@ -65,16 +66,63 @@ const AdminContextProvider = (props) => {
     }
   };
 
-  // The `value` object will made avialable for all childe components through context.
+  //list all  all appointments data from Database
+  const listAllAppointments = async () => {
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}api/v1/admin/list-appointments`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+      if (data.success) {
+        setAppointments(data.appointments.reverse());
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
+
+  // Function to cancel appointment using API
+  const cancelAppointment = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}api/v1/admin/cancel-appointment`,{appointmentId},
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        listAllAppointments();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
+
   const value = {
     adminToken,
     setAdminToken,
     doctors,
     adminListAllDoctors,
-    changeAvailability
+    changeAvailability,
+    appointments,
+    listAllAppointments,
+    cancelAppointment
   };
 
-  // This makes the `value` available to all child components wrapped by provider.
   return (
     <AdminContext.Provider value={value}>
       {props.children}
