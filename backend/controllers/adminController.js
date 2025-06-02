@@ -5,6 +5,7 @@ import { createDoctor } from "../services/adminService.js";
 import validator from "validator";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import userModel from "../models/userModel.js"
 
 
 
@@ -94,6 +95,22 @@ const adminRegisterDoctor = async (req, res) => {
   }
 }
 
+// controller function to cancel admin appointments
+const adminCancelAppointment = async (req, res) => {
+  try {
+
+      const { appointmentId } = req.body
+      await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+
+      res.json({ success: true, message: 'Appointment Cancelled' })
+
+  } catch (error) {
+      console.log(error)
+      res.json({ success: false, message: error.message })
+  }
+
+}
+
 
 // function controller to list all doctors 
 
@@ -123,21 +140,35 @@ const adminlistAppointments = async (req, res) => {
 }
 
 
-const adminCancelAppointment = async (req, res) => {
+
+// controller function to get doctors and appointment data to admin panel 
+
+const adminDashboard = async (req, res) => {
   try {
+    
+    const [doctors, users, appointments] = await Promise.all([
+      doctorModel.find({}),
+      userModel.find({}),
+      appointmentModel.find({})
+    ]);
 
-      const { appointmentId } = req.body
-      await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+    // Prepare response data
+    const dashboardData = {
+      doctors: doctors.length,
+      patients: users.length,
+      appointments: appointments.length,
+      latestAppointments: appointments.slice(-5).reverse()  
+    };
 
-      res.json({ success: true, message: 'Appointment Cancelled' })
-
+    return res.status(200).json({ success: true, dashboardData });
   } catch (error) {
-      console.log(error)
-      res.json({ success: false, message: error.message })
+    console.error("Admin Dashboard Error:", error.message);
+    return res.status(500).json({ success: false, message: "Server Error: " + error.message });
   }
-
-}
-
+};
 
 
-export { adminRegisterDoctor, loginAdmin, adminListDoctors,adminlistAppointments,adminCancelAppointment };
+
+
+
+export { adminRegisterDoctor, loginAdmin, adminListDoctors,adminlistAppointments,adminCancelAppointment,adminDashboard };

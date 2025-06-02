@@ -16,6 +16,7 @@ const AdminContextProvider = (props) => {
 
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [dashboardData, setDashboardData] = useState(false);
 
   // Function listing  all Doctors data from Database
   const adminListAllDoctors = async () => {
@@ -92,7 +93,8 @@ const AdminContextProvider = (props) => {
   const cancelAppointment = async (appointmentId) => {
     try {
       const { data } = await axios.post(
-        `${backendUrl}api/v1/admin/cancel-appointment`,{appointmentId},
+        `${backendUrl}api/v1/admin/cancel-appointment`,
+        { appointmentId },
         {
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -112,6 +114,28 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  const getDashboardData = async () => {
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}api/v1/admin/dashboard`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        setDashboardData(data.dashboardData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   const value = {
     adminToken,
     setAdminToken,
@@ -120,7 +144,9 @@ const AdminContextProvider = (props) => {
     changeAvailability,
     appointments,
     listAllAppointments,
-    cancelAppointment
+    cancelAppointment,
+    getDashboardData,
+    dashboardData
   };
 
   return (
