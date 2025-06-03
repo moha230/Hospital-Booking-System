@@ -9,7 +9,7 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "../../components/table";
+} from "../../components/adminTable";
 
 const AllAppointments = () => {
   const { adminToken, appointments, cancelAppointment, listAllAppointments } =
