@@ -9,8 +9,8 @@ const authDoctor = async (req, res, next) => {
       return res.status(401).json({ error: 'Authorization doctorToken missing or malformed' });
     }
 
-    const doctorToken = authorization.split(' ')[1];
-    const decoded = jwt.verify(doctorToken, process.env.JWT_SECRET);
+    const token = authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.doctor = decoded; 
     next();

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "@/context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { DoctorContext } from "../context/DoctorContext";
 
 const Login = () => {
   // State to track which type of login is currently active ("Admin" or "Doctor")
@@ -13,10 +13,9 @@ const Login = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const { setAdminToken } = useContext(AdminContext);
-  
-  console.log("Backend URL:", backendUrl);
+  const { setDoctorToken } = useContext(DoctorContext);
 
-  //function for handlins submition
+  //function for handling submition
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
@@ -26,6 +25,8 @@ const Login = () => {
           password,
         });
 
+        console.log(data)
+
         if (data.success) {
           setAdminToken(data.token);
           //set the token to local storage
@@ -33,9 +34,26 @@ const Login = () => {
         } else {
           toast.error(data.message);
         }
+      } else if (state === "Doctor") {
+        const { data } = await axios.post(backendUrl + "api/v1/doctor/login", {
+          email,
+          password,
+        });
+
+        console.log(data)
+        if (data.success) {
+          setDoctorToken(data.token);
+          //set the token to local storage
+          localStorage.setItem("doctorToken", data.token);
+        } else {
+          toast.error(data.message);
+        }
       }
     } catch (err) {
-      console.log(err);
+      console.log("Login error:", err.response?.data || err.message || err);
+      toast.error(
+        err.response?.data?.message || "Login failed. Please try again"
+      );
     }
   };
 

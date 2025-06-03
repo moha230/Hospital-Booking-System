@@ -1,36 +1,46 @@
 import React, { useContext } from "react";
 import { assets } from "../assets/assets.js";
 import { AdminContext } from "../context/AdminContext";
+import { DoctorContext } from "../context/DoctorContext";
 
 const Navbar = () => {
   const { adminToken, setAdminToken } = useContext(AdminContext);
+  const { doctorToken, setDoctorToken } = useContext(DoctorContext);
 
-  //function to logout
   const logout = () => {
-    adminToken && setAdminToken("");
-    adminToken && localStorage.removeItem("adminToken");
+    if (adminToken) {
+      setAdminToken("");
+      localStorage.removeItem("adminToken");
+    }
+
+    if (doctorToken) {
+      setDoctorToken("");
+      localStorage.removeItem("doctorToken");
+    }
   };
 
   return (
-    <div className="flex justify-between items-center px-4 sm:px-10 py-3 border-b bg.white">
+    <div className="flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white">
       <div className="flex items-center gap-3 text-xs">
         <img
           className="w-36 sm:w-40 cursor-pointer"
           src={assets.admin_logo}
-          alt=""
+          alt="Logo"
         />
         <p className="border px-3.5 py-0.5 rounded-full border-green-600">
-          {adminToken ? "Admin" : "Doctor"}
+          {adminToken ? "Admin" : doctorToken ? "Doctor" : "Guest"}
         </p>
       </div>
-      <button
-        onClick={logout}
-        className="bg-primary text-white text-sm px-10 py-2 rounded-full"
-      >
-        Logout
-      </button>
+      {(adminToken || doctorToken) && (
+        <button
+          onClick={logout}
+          className="bg-primary text-white text-sm px-10 py-2 rounded-full"
+        >
+          Logout
+        </button>
+      )}
     </div>
   );
 };
 
-export {Navbar};
+export { Navbar };

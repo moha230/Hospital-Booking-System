@@ -9,36 +9,54 @@ import Dashboard from "./pages/Admin/Dashboard";
 import AllAppointments from "./pages/Admin/AllAppointments";
 import DoctorRegistration from "./pages/Admin/DoctorRegistration";
 import DoctorsList from "./pages/Admin/DoctorsList";
+import DoctorDashboard from "./pages/Doctor/DoctorDashboard.jsx";
+import { DoctorContext } from "./context/DoctorContext.jsx";
 
 const App = () => {
-  const { adminToken, adminInfo } = useContext(AdminContext); // 
+  const { adminToken, adminInfo } = useContext(AdminContext);
+  const { doctorToken, doctorInfo } = useContext(DoctorContext);  // 
   const location = useLocation();
 
   useEffect(() => {
-    const getTitle = (pathname) => {
-      if (!adminToken) return "Admin Login";
-
-      if (pathname === "/admin-dashboard")
-        return adminInfo?.name
-          ? `Dashboard - Dr. ${adminInfo.name} | Unix-doctors`
-          : "Admin Dashboard";
-
-      if (pathname === "/all-appointments")
-        return "Appointments";
-
-      if (pathname === "/doctor-registration")
-        return "Doctor Registration";
-
-      if (pathname === "/list-all-doctors")
-        return "Doctors List";
-
-      return "Unix-doctors Admin";
+    const pathname = location.pathname;
+  
+    const getTitle = () => {
+      if (adminToken) {
+        switch (pathname) {
+          case "/admin-dashboard":
+            return adminInfo?.name
+              ? `Dashboard - ${adminInfo.name} | Unix-doctors`
+              : "Admin Dashboard";
+          case "/all-appointments":
+            return "Appointments";
+          case "/doctor-registration":
+            return "Doctor Registration";
+          case "/list-all-doctors":
+            return "Doctors List";
+          default:
+            return "Unix-doctors Admin";
+        }
+      }
+  
+      if (doctorToken) {
+        switch (pathname) {
+          case "/doctor-dashboard":
+            return doctorInfo?.name
+              ? `Dr. ${doctorInfo.name}'s Dashboard | Unix-doctors`
+              : "Doctor Dashboard";
+          default:
+            return "Unix-doctors Doctor";
+        }
+      }
+  
+      return "Admin Login";
     };
+  
+    document.title = getTitle();
+  }, [location, adminToken, adminInfo, doctorToken, doctorInfo]);
+  
 
-    document.title = getTitle(location.pathname);
-  }, [location, adminToken, adminInfo]);
-
-  return adminToken ? (
+  return doctorToken || adminToken ? (
     <div className="bg-background">
       <ToastContainer />
       <Navbar />
@@ -51,6 +69,9 @@ const App = () => {
             <Route path="/all-appointments" element={<AllAppointments />} />
             <Route path="/doctor-registration" element={<DoctorRegistration />} />
             <Route path="/list-all-doctors" element={<DoctorsList />} />
+            {/*doctor path*/}
+
+            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
           </Routes>
         </div>
       </div>

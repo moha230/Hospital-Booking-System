@@ -1,37 +1,48 @@
-import jwt from "jsonwebtoken";
-import doctorModel from "../models/doctorModel.js";
-import bcrypt from "bcrypt";
 
 
-
-//controller function for admin login 
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import doctorModel from '../models/doctorModel.js';
 
 const loginDoctor = async (req, res) => {
-
   try {
+    const { email, password } = req.body;
+    const doctor = await doctorModel.findOne({ email });
 
-      const { email, password } = req.body
-      const doctor = await doctorModel.findOne({ email })
+    if (!doctor) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
 
-      if (!doctor) {
-          return res.json({ success: false, message: "Invalid credentials" })
-      }
+    const isMatch = await bcrypt.compare(password, doctor.password);
 
-      const isMatch = await bcrypt.compare(password, doctor.password)
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Invalid credentials" });
+    }
 
-      if (isMatch) {
-          const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET)
-          res.json({ success: true, token })
-      } else {
-          res.json({ success: false, message: "Invalid credentials" })
-      }
+    
+    const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
 
-
+    
+    res.status(200).json({
+      success: true,
+      token,
+      doctor: {
+        id: doctor._id,
+        name: doctor.name,
+        email: doctor.email,
+        specialization: doctor.specialization,
+      },
+    });
   } catch (error) {
-      console.log(error)
-      res.json({ success: false, message: error.message })
+    console.error("Login error:", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
   }
-}
+};
+
+export default loginDoctor;
+
 
 // controller function to change the availability of the doctors need both admin and doctors panel 
 

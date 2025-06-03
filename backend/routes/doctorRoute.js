@@ -10,7 +10,7 @@ const doctorRouter = express.Router()
 //route to list all doctors in the frontend 
 doctorRouter.get('/list', doctorList)
 
-doctorRouter.post('/login',authDoctor, loginDoctor);
+doctorRouter.post('/login', loginDoctor);
 
 
 
