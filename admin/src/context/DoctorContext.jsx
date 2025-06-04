@@ -49,8 +49,10 @@ const DoctorContextProvider = (props) => {
         },
       });
 
+      console.log("Dashboard response:", data);
+
       if (data.success) {
-        setDashboardData(data.dashboardData);
+        setDashboardData(data.dashboard);
       } else {
         toast.error(data.message);
       }
@@ -67,7 +69,7 @@ const DoctorContextProvider = (props) => {
           Authorization: `Bearer ${doctorToken}`,
         },
       });
-      console.log(data.profileData);
+    
       setProfileData(data.profileData);
     } catch (error) {
       console.log(error);
@@ -75,32 +77,71 @@ const DoctorContextProvider = (props) => {
     }
   };
 
-  
-  const completeAppointment = async (appointmentId) => {
-
+  const updateProfile = async (profileData, imageFile = null) => {
     try {
-
-      const { data } = await axios.get(`${backendUrl}api/v1/doctor/complete-appointment`, {
-        headers: {
-          Authorization: `Bearer ${doctorToken}`,
-        },
-      });
-
-        if (data.success) {
-            toast.success(data.message)
-            listAllAppointments()
-            
-            getDashboardData()
-        } else {
-            toast.error(data.message)
+      const formData = new FormData();
+  
+      formData.append("about", profileData.about);
+      formData.append("available", profileData.available);
+  
+      formData.append("address", JSON.stringify(profileData.address));
+  
+      if (imageFile) {
+        formData.append("image", imageFile); 
+      }
+  
+      const { data } = await axios.post(
+        `${backendUrl}/api/doctor/update-profile`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${doctorToken}`,
+            "Content-Type": "multipart/form-data", 
+          },
         }
-
+      );
+  
+      if (data.success) {
+        toast.success(data.message);
+        getProfileData();
+        return true;
+      } else {
+        toast.error(data.message);
+        return false;
+      }
     } catch (error) {
-        toast.error(error.message)
-        console.log(error)
+      toast.error(error.message);
+      console.log(error);
+      return false;
     }
+  };
+  
+  
 
-}
+  const completeAppointment = async (appointmentId) => {
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}api/v1/doctor/complete-appointment`,
+        {
+          headers: {
+            Authorization: `Bearer ${doctorToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        listAllAppointments();
+
+        getDashboardData();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
 
   const value = {
     doctorToken,
@@ -112,7 +153,8 @@ const DoctorContextProvider = (props) => {
     getProfileData,
     profileData,
     dashboardData,
-    completeAppointment
+    completeAppointment,
+    updateProfile,
   };
 
   return (

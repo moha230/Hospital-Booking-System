@@ -11,6 +11,7 @@ import DoctorRegistration from "./pages/Admin/DoctorRegistration";
 import DoctorsList from "./pages/Admin/DoctorsList";
 import DoctorDashboard from "./pages/Doctor/DoctorDashboard.jsx";
 import { DoctorContext } from "./context/DoctorContext.jsx";
+import DoctorProfile from "./pages/Doctor/DoctorProfile";
 
 const App = () => {
   const { adminToken, adminInfo } = useContext(AdminContext);
@@ -72,6 +73,7 @@ const App = () => {
             {/*doctor path*/}
 
             <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+            <Route path="/doctor-profile" element={<DoctorProfile />} />
           </Routes>
         </div>
       </div>
