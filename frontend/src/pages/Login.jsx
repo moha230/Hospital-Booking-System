@@ -4,8 +4,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-
-
 const Login = () => {
   const [state, setState] = useState("Sign Up");
 
@@ -26,16 +24,12 @@ const Login = () => {
     event.preventDefault();
 
     try {
-
-
       const isStrongPassword = (pwd) => pwd.length >= 16;
 
       if (!isStrongPassword(password)) {
         toast.error("Please enter a strong password (at least 16 characters)");
         return;
       }
-      
-
 
       if (state === "Sign Up") {
         const { data } = await axios.post(`${backendUrl}api/v1/user/register`, {
@@ -65,7 +59,10 @@ const Login = () => {
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error.response?.data?.message || error.message || "Something went wrong"
+      );
+      console.error("Login error:", error.response);
     }
   };
 
@@ -77,11 +74,6 @@ const Login = () => {
       }, 2000);
     }
   }, [userToken]);
-  
- 
-
-
-
 
   return (
     <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
@@ -90,8 +82,7 @@ const Login = () => {
           {state === "Sign Up" ? "Create Account" : "Login"}
         </p>
         <p>
-          Please {state === "Sign Up" ? "sign up" : "login"} to book
-          appointment
+          Please {state === "Sign Up" ? "sign up" : "login"} to book appointment
         </p>
         {state === "Sign Up" ? (
           <div className="w-full ">
